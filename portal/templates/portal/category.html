@@ -1,0 +1,7 @@
+{% block content%}
+    <h1>{{ category.title }}</h1>
+    {% for message in messages %}
+        <h3> {{ message.title }} </h3>
+        <p> {{ message.content }} </p>
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,30 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Category, Message
+from django.contrib.auth.models import User
+def home(request):
+    content = {}
+
+    if request.user.is_authenticated:
+        categories = Category.objects.filter(author=request.user)
+        content = {
+            'categories': categories
+        }
+
+    return render(request, 'portal/home.html', content)
+
+def about(request):
+    return render(request, 'portal/about.html')
+
+
+def category(request, pk):
+    content = {}
+    if request.user.is_authenticated:
+        category = Category.objects.get(pk = pk)
+        messages = Message.objects.filter(category__pk = pk)
+        content = {
+            'category' : category,
+            'messages': messages
+        }
+
+    return render(request, 'portal/category.html', content)
