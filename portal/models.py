@@ -23,4 +23,9 @@ class Message(models.Model):
 class GrepRequest(models.Model):
     # title = models.CharField(max_length=100)
     # content = ...
-    pass
+    #url = models.CharField(max_length=100)
+    #content_title = models.CharField(max_length=100)
+    #selected_content = models.TextField()
+
+    def __str__(self):
+        return self.content_title
