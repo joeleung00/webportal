@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Category, Message
 from django.contrib.auth.models import User
+
+from .tasks import process_grep_requests
+
 def home(request):
     content = {}
 
@@ -14,6 +17,7 @@ def home(request):
     return render(request, 'portal/home.html', content)
 
 def about(request):
+    process_grep_requests()
     return render(request, 'portal/about.html')
 
 
