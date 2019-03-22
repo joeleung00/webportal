@@ -19,4 +19,4 @@ def process_grep_requests():
         # Find corresponding message to update
         message = request.message
         message.content = target_content
-        request.save()
+        message.save()
