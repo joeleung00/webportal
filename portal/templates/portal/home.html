@@ -1,4 +1,4 @@
-<!-- 
+<!--
 {% block content %}
     <h1> THIS IS THE HOME PAGE </h1>
     <h2> Hello {{ user.username }} </h2>
@@ -135,9 +135,11 @@
       </ul>
 
       <!-- new category button -->
+      {% if user.is_authenticated %}
       <a href="" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
         Add new Category
       </a>
+      {% endif %}
     </div>
     <div class="navigation-background"></div>
   </div>
@@ -157,9 +159,11 @@
 
             <div class="text-center">
               <!-- new website button -->
+              {% if user.is_authenticated %}
               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
                 Add New Website
               </a>
+              {% endif %}
             </div>
 
           </div>
@@ -245,22 +249,35 @@ aria-hidden="true">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+
+
+
     <div class="modal-body mx-3">
       <div class="md-form mb-5">
         <i class="fas fa-envelope prefix grey-text"></i>
+    <form method="post">
+        {% csrf_token %}
         <input type="text" id="cate_title" class="form-control validate">
         <label data-error="wrong" data-success="right" for="form3">Category Title</label>
-      </div>
 
+
+      </div>
     </div>
+
     <div class="modal-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-primary btn-block" onclick="addNewCategory()" data-dismiss="modal">Add</button>
+     <input type="submit" class="btn btn-primary btn-block" onclick="addNewCategory()" value="Add">
     </div>
+    </form>
+
+
+
   </div>
 </div>
 </div>
 
 <!-- Add Website Form -->
+<form action="/hi/" method="post">
+    {% csrf_token %}
 <div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
 <div class="modal-dialog" role="document">
@@ -286,11 +303,13 @@ aria-hidden="true">
 
     </div>
     <div class="modal-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-primary btn-block" onclick="searchURL()" data-dismiss="modal">Search</button>
+      <input type="submit" class="btn btn-primary btn-block" value="Search">
     </div>
   </div>
 </div>
 </div>
+</form>
+
 
 <!-- Login in Form -->
 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -368,4 +387,3 @@ aria-hidden="true">
 
     </body>
 </html>
-
