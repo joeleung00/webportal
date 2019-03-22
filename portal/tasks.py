@@ -1,4 +1,5 @@
 from background_task import background
+from .netgrep import parsehtml
 from .models import Category
 
 #@background(schedule=1)
