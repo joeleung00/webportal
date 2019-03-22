@@ -17,11 +17,11 @@ def home(request):
     return render(request, 'portal/home.html', content)
 
 def about(request):
-    process_grep_requests()
     return render(request, 'portal/about.html')
 
 
 def category(request, pk):
+    process_grep_requests()
     content = {}
     if request.user.is_authenticated:
         category = Category.objects.get(pk = pk)
