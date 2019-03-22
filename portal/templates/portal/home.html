@@ -1,4 +1,4 @@
-
+<!-- 
 {% block content %}
     <h1> THIS IS THE HOME PAGE </h1>
     <h2> Hello {{ user.username }} </h2>
@@ -17,4 +17,355 @@
     <div>
     <a href="{% url  'portal-about' %}"> about </a>
     </div>
-{% endblock content %}
+{% endblock content %} -->
+
+
+
+
+<!-- Merge Jackie's code with Django home.html -->
+
+<!DOCTYPE html>
+
+{% load static %}
+
+<html class="loading" lang="en" data-textdirection="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="Chameleon Admin is a modern Bootstrap 4 webapp &amp; admin dashboard html template with a large number of components, elegant design, clean and organized code.">
+    <meta name="keywords" content="admin template, Chameleon admin template, dashboard template, gradient admin template, responsive admin template, webapp, eCommerce dashboard, analytic dashboard">
+    <meta name="author" content="ThemeSelect">
+    <title>Dashboard - Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit</title>
+    <link rel="apple-touch-icon" href="{% static 'theme-assets/images/ico/apple-icon-120.png' %">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'theme-assets/images/ico/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
+    <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome.min.css" rel="stylesheet">
+    <!-- BEGIN VENDOR CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/vendors.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/vendors/css/charts/chartist.css' %}">
+    <!-- END VENDOR CSS-->
+    <!-- BEGIN CHAMELEON  CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/app-lite.css' %}">
+    <!-- END CHAMELEON  CSS-->
+    <!-- BEGIN Page Level CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/menu/menu-types/vertical-menu.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/colors/palette-gradient.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/pages/dashboard-ecommerce.css' %}">
+    <!-- END Page Level CSS-->
+    <!-- BEGIN Custom CSS-->
+    <!-- END Custom CSS-->
+  </head>
+  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
+
+    <!-- ==============TOP MENU============== -->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light">
+      <div class="navbar-wrapper">
+        <div class="navbar-container content">
+          <div class="collapse navbar-collapse show" id="navbar-mobile">
+            <ul class="nav navbar-nav mr-auto float-left">
+              <li class="nav-item d-block d-md-none"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+
+              <li class="nav-item dropdown navbar-search"><a class="nav-link dropdown-toggle hide" data-toggle="dropdown" href="#"><i class="ficon ft-search"></i></a>
+                <ul class="dropdown-menu">
+                  <li class="arrow_box">
+
+                    <!-- Search form -->
+                    <!-- may not need? -->
+                    <form>
+                      <div class="input-group search-box">
+                        <div class="position-relative has-icon-right full-width">
+                          <input class="form-control" id="search" type="text" placeholder="Search here...">
+                          <div class="form-control-position navbar-search-close"><i class="ft-x">   </i></div>
+                        </div>
+                      </div>
+                    </form>
+
+
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <ul class="nav navbar-nav float-right">
+
+            <!-- Top Right Corner -->
+            <!-- for the login, logout, user icon -->
+
+              {% if user.is_authenticated %}
+                  <a href="{% url 'logout' %}"> Logout </a>
+              {% else %}
+                  <a href="{% url 'login' %}"> Login </a>
+              {% endif%}
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////-->
+   <!-- LEFT MENU -->
+
+   <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true" data-img='https://source.unsplash.com/twukN12EN7c/1920x1080'>
+    <div class="navbar-header">
+      <ul class="nav navbar-nav flex-row">
+        <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="Chameleon admin logo" src="{% static 'theme-assets/images/logo/logo.png' %}"/>
+            <!-- Menu title -->
+            <h3 class="brand-text">CSCI 3100</h3></a></li>
+        <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
+      </ul>
+    </div>
+    <div class="main-menu-content">
+      <!-- menu content -->
+      <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+        <li class="active"><a href=""><i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a>
+        </li>
+
+        <!-- list item for the category -->
+
+        {% for category in categories %}
+            <li class=" nav-item">
+            <a href="{% url 'portal-category' category.id  %}">{{ category.title }}</a>
+            </li>
+        {% endfor %}
+
+        <!-- end of list item for the category -->
+
+      </ul>
+
+      <!-- new category button -->
+      <a href="" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
+        Add new Category
+      </a>
+    </div>
+    <div class="navigation-background"></div>
+  </div>
+
+  <!-- MAIN page -->
+
+  <div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-wrapper-before"></div>
+      <div class="content-header row">
+        <div class="content-header-left col-md-4 col-12 mb-2">
+          <!-- Main page title -->
+          <h3 class="content-header-title">Home</h3>
+        </div>
+        <div class="content-header-right col-md-8 col-12">
+          <div class="breadcrumbs-top float-md-right">
+
+            <div class="text-center">
+              <!-- new website button -->
+              <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
+                Add New Website
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="content-body">
+
+<!-- MAIN Content -->
+
+<div class="row match-height">
+  <!-- first card (dummy) -->
+  <div class="col-xl-4 col-lg-6 col-md-12">
+          <div class="card">
+              <div class="card-header">
+                  <!-- title for the box -->
+                  <h4 class="card-title" id="heading-multiple-thumbnails">Multiple Thumbnail</h4>
+                  <a class="heading-elements-toggle">
+                      <i class="la la-ellipsis-v font-medium-3"></i>
+                  </a>
+
+                  <!-- button for the box -->
+                  <div class="heading-elements">
+                      <ul class="list-inline mb-0">
+                          <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                          <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                          <li><a data-action="close"><i class="ft-x"></i></a></li>
+                      </ul>
+                  </div>
+                  <!-- end of button for the box -->
+
+              </div>
+
+              <!-- content for the box -->
+              <div class="card-content collapse show">
+                  <div class="card-body">
+                      <h4 class="card-title">Content title</h4>
+                      <p class="card-text">Jelly beans sugar plum cheesecake cookie oat cake soufflé.Tootsie roll bonbon liquorice tiramisu pie powder.Donut sweet
+                          roll marzipan pastry cookie cake tootsie roll oat cake cookie.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. </p>
+                      <p class="card-text">Sweet roll marzipan pastry halvah. Cake bear claw sweet. Tootsie roll pie marshmallow lollipop chupa chups donut fruitcake
+                          cake.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. Marshmallow
+                          wafer tiramisu jelly beans.</p>
+                  </div>
+              </div>
+          </div>
+  </div>
+  <!-- second card (dummy) -->
+  <div class="col-xl-4 col-lg-6 col-md-12">
+      <div class="card">
+        <div class="card-header">
+            <h4 class="card-title" id="heading-multiple-thumbnails">Recent products</h4>
+            <a class="heading-elements-toggle">
+                <i class="la la-ellipsis-v font-medium-3"></i>
+            </a>
+            <div class="heading-elements">
+                <ul class="list-inline mb-0">
+                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                    <li><a data-action="close"><i class="ft-x"></i></a></li>
+                </ul>
+            </div>
+        </div>
+          <div class="card-content collapse show">
+              <div class="card-body" id='box2_text'>
+                  <h6 class="card-subtitle text-muted">Carousel Card With Header & Footer</h6>
+              </div>
+
+          </div>
+      </div>
+  </div>
+
+
+</div>
+<!-- ===========FORM============ -->
+
+<!-- Add Category Form -->
+<div class="modal fade" id="modalAddCategoryForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Add New Category</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        <input type="text" id="cate_title" class="form-control validate">
+        <label data-error="wrong" data-success="right" for="form3">Category Title</label>
+      </div>
+
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-primary btn-block" onclick="addNewCategory()" data-dismiss="modal">Add</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Add Website Form -->
+<div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Add New Website</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        <input type="text" id="web_title" class="form-control validate">
+        <label data-error="wrong" data-success="right" for="form3">Website Title</label>
+      </div>
+
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        <input type="text" id="web_URL" class="form-control validate">
+        <label data-error="wrong" data-success="right" for="form3">Website URL</label>
+      </div>
+
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-primary btn-block" onclick="searchURL()" data-dismiss="modal">Search</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Login in Form -->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Login</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        <input type="text" id="user_name" class="form-control validate">
+        <label data-error="wrong" data-success="right" for="form3">Name</label>
+      </div>
+
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        <input type="text" id="user_password" class="form-control validate">
+        <label data-error="wrong" data-success="right" for="form3">Password</label>
+      </div>
+
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-primary btn-block" onclick="addNewCategory()" data-dismiss="modal">Login</button>
+    </div>
+  </div>
+</div>
+</div>
+      </div>
+    </div>
+  </div>
+  <!-- ////////////////////////////////////////////////////////////////////////////-->
+
+  <!-- FOOTER -->
+
+  <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+    <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
+      <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
+        <li class="list-inline-item"><a class="my-1" href="" target="_blank"> Help</a></li>
+        </ul>
+
+    <!-- "About" link -->
+
+    <div>
+    <a href="{% url  'portal-about' %}"> about </a>
+    </div>
+
+    </div>
+  </footer>
+
+
+
+
+
+
+    <!-- BEGIN VENDOR JS-->
+    <script src="{% static 'theme-assets/vendors/js/vendors.min.js' %}" type="text/javascript"></script>
+    <!-- BEGIN VENDOR JS-->
+    <!-- BEGIN PAGE VENDOR JS-->
+    <script src="{% static 'theme-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
+    <!-- END PAGE VENDOR JS-->
+    <!-- BEGIN CHAMELEON  JS-->
+    <script src="{% static 'theme-assets/js/core/app-menu-lite.js' %}" type="text/javascript"></script>
+    <script src="{% static 'theme-assets/js/core/app-lite.js' %}" type="text/javascript"></script>
+    <!-- END CHAMELEON  JS-->
+    <!-- BEGIN PAGE LEVEL JS-->
+    <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
+    <!-- END PAGE LEVEL JS-->
+    <script type = "text/javascript" src = "{% static 'assets/js/scripts.js' %}" ></script>
+
+
+    </body>
+</html>
+
