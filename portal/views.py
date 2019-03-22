@@ -27,9 +27,9 @@ def home(request):
                 categories = Category.objects.filter(author=request.user)
 
 
-    content = {
-        'categories': categories
-    }
+        content = {
+            'categories': categories
+        }
     return render(request, 'portal/home.html', content)
 
 def about(request):
