@@ -12,8 +12,8 @@ def home(request):
         categories = Category.objects.filter(author=request.user)
         category_blocks = [
             {
-                'category': category
-                'messages': Message.objects.filter(category=category)
+                'category': category,
+                'messages': Message.objects.filter(category=category),
             } for category in categories
         ]
         content = {
