@@ -1,5 +1,5 @@
 from background_task import background
-from .netgrep import parsehtml
+from .netgrep.parsehtml import ParseHtml
 from . import models as db
 
 #@background(schedule=1)
