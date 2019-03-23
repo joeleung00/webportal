@@ -38,22 +38,18 @@ def home(request):
             #  checkvalid()...
             element = crawlpage(url, crawltag)
 
-            new_grep = GrepRequest()
-            new_grep.content_title = msg_title
-            new_grep.selected_content = element
-            new_grep.url = url
-
             new_msg = Message()
             new_msg.title = msg_title
             new_msg.category = categories.get(title = category_name)
             new_msg.content = ".."
             new_msg.save()
 
+            new_grep = GrepRequest()
+            new_grep.content_title = msg_title
+            new_grep.selected_content = element
+            new_grep.url = url
             new_grep.message = new_msg
             new_grep.save()
-
-
-
 
 
         category_blocks = [

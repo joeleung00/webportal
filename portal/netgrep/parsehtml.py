@@ -26,11 +26,14 @@ class ParseHtml:
                 a string concatenating all strings in target_tag
         '''
 
-        result = ''
-        for string in target_tag.stripped_strings:
-            result += ' ' + string
-        result = re.sub('\s+', ' ', result).strip()
-        return result
+        if hasattr(target_tag, stripped_strings):
+            result = ''
+            for string in target_tag.stripped_strings:
+                result += ' ' + string
+            result = re.sub('\s+', ' ', result).strip()
+            return result
+        else:
+            return ''
 
     @classmethod
     def grep_tags(cls, rexpr, url):
@@ -42,14 +45,18 @@ class ParseHtml:
             string url
                 The url of the target webpage
         Output:
-            list<bs4.element.Tag>
-                list of tags matching the regular expression rexpr
+            list<bs4.element.Tag | NoneType>
+                bs4.element.Tag: tag matching the regular expression rexpr
+                NoneType: URL not found / rexpr not found
         '''
 
         soup = ParseHtml._url_to_soup(url, 'html.parser')
-        matches = soup.find_all(text=re.compile(rexpr))
-        matching_tags = [tag.parent for tag in matches]
-        return matching_tags
+        if soup is not None:
+            matches = soup.find_all(text=re.compile(rexpr))
+            matching_tags = [tag.parent for tag in matches]
+            return matching_tags
+        else:
+            return [None for tag in matches]
 
     @classmethod
     def retrieve_first_tags_matches(cls, full_tags, url):
@@ -64,12 +71,16 @@ class ParseHtml:
             string url
                 The url of the target webpage
         Output:
-            list<bs4.element.Tag>
-                list of tag having the first exact match for each full_tag in full_tags
+            list<bs4.element.Tag | NoneType>
+                bs4.element.Tag: tag having the first exact match for each full_tag in full_tags
+                NoneType: URL not found / tag not found
         '''
 
         soup = ParseHtml._url_to_soup(url, 'html.parser')
-        return [ParseHtml._retrieve_first_tag_match(full_tag, soup) for full_tag in full_tags]
+        if soup is not None:
+            return [ParseHtml._retrieve_first_tag_match(full_tag, soup) for full_tag in full_tags]
+        else:
+            return [None for full_tag in full_tags]
 
     @classmethod
     def retrieve_hierarchical_tags_matches(cls, hierarchy_tags, url):
@@ -93,8 +104,9 @@ class ParseHtml:
             string url
                 The url of the target webpage
         Output:
-            list<bs4.element.Tag>
-                list of tag with the same hierarchical position as hierarchy_tag for each hierarchy_tag in hierarchy_tags
+            list<bs4.element.Tag | NoneType>
+                bs4.element.Tag: tag with the same hierarchical position as hierarchy_tag for each hierarchy_tag in hierarchy_tags
+                NoneType: URL not found / tag not found
         '''
 
         raise NotImplemented('netgrep: retrieve_hierarchical_tags_matches is still under construction')
@@ -111,15 +123,28 @@ class ParseHtml:
 
         Input:
             string url
-        Output:
+        Successful output:
             BeautifulSoup soup
                 The BeautifulSoup object containing the contents of target website
+        Special output:
+            NoneType
+                Not found
         '''
 
         if parser != 'html.parser':
             raise NotImplemented('netgrep: only html.parser is currently supported')
         http = urllib3.PoolManager() # TODO: Should be moved as class variable later to avoid multiple allocation
-        page = http.request('GET', url) # TODO: Cache retrieved webpages and only refresh every some intervals
+        # TODO: Cache retrieved webpages and only refresh every some intervals
+        try:
+            page = http.request('GET', url)
+        except http.exceptions.Timeout:
+            return None
+        except http.exceptions.TooManyRedirects:
+            # TODO: raise more meaningful message
+            return None
+        except http.exceptions.RequestException as e:
+            print("FATAL: unexpected error. ", e)
+            raise
         soup = BeautifulSoup(page.data, parser)
         return soup
 
@@ -135,30 +160,39 @@ class ParseHtml:
                 e.g. full_tag = '<div class="login">', does not need '</div>'
             BeautifulSoup soup
                 The BeautifulSoup object containing the contents of target website
-        Output:
+        Successful output:
             bs4.element.Tag
                 containing whole section of the target part
+        Special output:
+            NoneType
+                Not found
         '''
 
-        # Evaluate the format of target tag
-        tag_soup = BeautifulSoup(full_tag, 'html.parser')
-        target_tag = tag_soup.contents[0]
+        try:
+            # Evaluate the format of target tag
+            tag_soup = BeautifulSoup(full_tag, 'html.parser')
+            target_tag = tag_soup.contents[0]
 
-        # Search for first match
-        sections = soup.find_all(target_tag.name)
-        result = ''
-        for section in sections:
-            if section.attrs == target_tag.attrs:
-                return section
-        else:
+            # Search for first match
+            sections = soup.find_all(target_tag.name)
+            result = ''
+            for section in sections:
+                if section.attrs == target_tag.attrs:
+                    return section
+            else:
+                return None
+        except:
+            print("Error: Trying to search for:", target_tag)
+            # TODO: return the reason causing error
             return None
 
 if __name__ == "__main__":
     # For testings
-    testcase = 2
+    testcase = 1
     siuon_url = 'http://www.cse.cuhk.edu.hk/~siuon/csci4230/'
     if testcase == 1:
-        target_tags = ['<section id="topics">', '<div class="login">', '<ul class="news">', '<thead>']
+        #target_tags = ['<section id="topics">', '<div class="login">', '<ul class="news">', '<thead>']
+        target_tags = ['<>']
         multiple = ParseHtml.retrieve_first_tags_matches(target_tags, siuon_url)
         for tag in multiple:
             if tag is not None:
