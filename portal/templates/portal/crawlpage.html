@@ -2,15 +2,15 @@
 <div>
 	<h3>Please input the following info to crawl a webpage</h3>
 
-	<form action="/crawlpage" method="post"> 
+	<form method="post">
 	<!-- action page needs change -->
 		{% csrf_token %}
 	    <label for="crawllink">Input Link:</label>
-	    <input id="crawllink" type="text" value="{{ crawllink }}">
+	    <input name="crawllink" type="text" value="{{ crawllink }}">
 	    <br>
 	    <br>
 	    <label for="crawltag">Input CSS selector:</label>
-	    <input id="crawltag" type="text"  value="{{ crawltag }}">
+	    <input name="crawltag" type="text"  value="{{ crawltag }}">
 	    <br>
 	    <br>
 	    <input type="submit" value="OK">
