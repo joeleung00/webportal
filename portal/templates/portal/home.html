@@ -1,4 +1,4 @@
-<!-- 
+<!--
 {% block content %}
     <h1> THIS IS THE HOME PAGE </h1>
     <h2> Hello {{ user.username }} </h2>
@@ -170,66 +170,38 @@
 <!-- MAIN Content -->
 
 <div class="row match-height">
-  <!-- first card (dummy) -->
-  <div class="col-xl-4 col-lg-6 col-md-12">
-          <div class="card">
-              <div class="card-header">
-                  <!-- title for the box -->
-                  <h4 class="card-title" id="heading-multiple-thumbnails">Multiple Thumbnail</h4>
-                  <a class="heading-elements-toggle">
-                      <i class="la la-ellipsis-v font-medium-3"></i>
-                  </a>
+    {% for block in category_blocks %}
+        <div class="col-xl-4 col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <!-- title for the box -->
+                    <h4 class="card-title" id="heading-multiple-thumbnails">{{ block.category.title }}</h4>
+                    <a class="heading-elements-toggle">
+                        <i class="la la-ellipsis-v font-medium-3"></i>
+                    </a>
 
-                  <!-- button for the box -->
-                  <div class="heading-elements">
-                      <ul class="list-inline mb-0">
-                          <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                          <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                          <li><a data-action="close"><i class="ft-x"></i></a></li>
-                      </ul>
-                  </div>
-                  <!-- end of button for the box -->
+                    <!-- button for the box -->
+                    <div class="heading-elements">
+                        <ul class="list-inline mb-0">
+                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                            <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
 
-              </div>
-
-              <!-- content for the box -->
-              <div class="card-content collapse show">
-                  <div class="card-body">
-                      <h4 class="card-title">Content title</h4>
-                      <p class="card-text">Jelly beans sugar plum cheesecake cookie oat cake soufflé.Tootsie roll bonbon liquorice tiramisu pie powder.Donut sweet
-                          roll marzipan pastry cookie cake tootsie roll oat cake cookie.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. </p>
-                      <p class="card-text">Sweet roll marzipan pastry halvah. Cake bear claw sweet. Tootsie roll pie marshmallow lollipop chupa chups donut fruitcake
-                          cake.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. Marshmallow
-                          wafer tiramisu jelly beans.</p>
-                  </div>
-              </div>
-          </div>
-  </div>
-  <!-- second card (dummy) -->
-  <div class="col-xl-4 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-header">
-            <h4 class="card-title" id="heading-multiple-thumbnails">Recent products</h4>
-            <a class="heading-elements-toggle">
-                <i class="la la-ellipsis-v font-medium-3"></i>
-            </a>
-            <div class="heading-elements">
-                <ul class="list-inline mb-0">
-                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                    <li><a data-action="close"><i class="ft-x"></i></a></li>
-                </ul>
+                <!-- content for the box -->
+                <div class="card-content collapse show">
+                    <div class="card-body">
+                        {% for message in block.messages %}
+                            <h4 class="card-title">{{ message.title }}</h4>
+                            <p class="card-text">{{ message.content }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
-          <div class="card-content collapse show">
-              <div class="card-body" id='box2_text'>
-                  <h6 class="card-subtitle text-muted">Carousel Card With Header & Footer</h6>
-              </div>
-
-          </div>
-      </div>
-  </div>
-
+    {% endfor %}
 
 </div>
 <!-- ===========FORM============ -->
@@ -368,4 +340,3 @@ aria-hidden="true">
 
     </body>
 </html>
-
