@@ -26,6 +26,9 @@
 
 {% load static %}
 
+{% load crispy_forms_tags %}
+
+
 <html class="loading" lang="en" data-textdirection="ltr">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -157,7 +160,8 @@
                   <form method="POST">
                         {% csrf_token %}
                         <fieldset class="form-group">
-                            {{ form }}
+                            {{ form | crispy }}
+
                         </fieldset>
                         <div class="form-group">
                             <button class="btn btn-outline-info" type="submit">Login</button>
