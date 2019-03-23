@@ -26,7 +26,7 @@ class ParseHtml:
                 a string concatenating all strings in target_tag
         '''
 
-        if hasattr(target_tag, stripped_strings):
+        if hasattr(target_tag, 'stripped_strings'):
             result = ''
             for string in target_tag.stripped_strings:
                 result += ' ' + string
