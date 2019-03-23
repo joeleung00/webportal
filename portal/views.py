@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from .models import Category, Message
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+
+from .tasks import process_grep_requests
+
 def home(request):
     content = {}
 
@@ -37,6 +40,7 @@ def about(request):
 
 
 def category(request, pk):
+    process_grep_requests()
     content = {}
     if request.user.is_authenticated:
         category = Category.objects.get(pk = pk)

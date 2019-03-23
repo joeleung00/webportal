@@ -1,7 +1,9 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
+migrations/
 
-.DS_Store
-
+#local_settings.py
 db.sqlite3
 
-migrations/
+#mac os generated file
+.DS_Store
