@@ -56,8 +56,14 @@ def home(request):
 
 
 
+        category_blocks = [
+            {
+                'category': category,
+                'messages': Message.objects.filter(category=category),
+            } for category in categories
+        ]
         content = {
-            'categories': categories
+            'category_blocks': category_blocks
         }
     return render(request, 'portal/home.html', content)
 
