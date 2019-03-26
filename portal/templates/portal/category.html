@@ -1,7 +1,18 @@
 {% block content%}
+    <form method="post">
+        {% csrf_token %}
+    <input type="hidden" name="Delete_cate" value= {{ category.id }}>
+    <input type="submit" value="Delete Category">
+    </form>
     <h1>{{ category.title }}</h1>
     {% for message in messages %}
         <h3> {{ message.title }} </h3>
         <p> {{ message.content }} </p>
+        <form method="post">
+            {% csrf_token %}
+        <input type="hidden" name="Delete_msg" value= {{ message.id }}>
+        <input type="submit" value="Delete">
+        </form>
     {% endfor %}
+    <a href="{% url 'portal-home' %}"> Home page </a>
 {% endblock content %}

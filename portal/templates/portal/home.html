@@ -1,4 +1,4 @@
-<!-- 
+<!--
 {% block content %}
     <h1> THIS IS THE HOME PAGE </h1>
     <h2> Hello {{ user.username }} </h2>
@@ -24,6 +24,8 @@
 
 <!-- Merge Jackie's code with Django home.html -->
 
+<!-- The Layout is modified from the Admin Template from https://themeselection.com/ -->
+
 <!DOCTYPE html>
 
 {% load static %}
@@ -33,10 +35,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Chameleon Admin is a modern Bootstrap 4 webapp &amp; admin dashboard html template with a large number of components, elegant design, clean and organized code.">
-    <meta name="keywords" content="admin template, Chameleon admin template, dashboard template, gradient admin template, responsive admin template, webapp, eCommerce dashboard, analytic dashboard">
-    <meta name="author" content="ThemeSelect">
-    <title>Dashboard - Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit</title>
+    <meta name="description" content="CSCI 3100 Project Home Page">
+    <meta name="keywords" content="dashboard, CSCI3100, Project">
+    <meta name="author" content="Group 17">
+    <title>Dashboard</title>
     <link rel="apple-touch-icon" href="{% static 'theme-assets/images/ico/apple-icon-120.png' %">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'theme-assets/images/ico/favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
@@ -135,9 +137,11 @@
       </ul>
 
       <!-- new category button -->
+      {% if user.is_authenticated %}
       <a href="" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
         Add new Category
       </a>
+      {% endif %}
     </div>
     <div class="navigation-background"></div>
   </div>
@@ -157,9 +161,11 @@
 
             <div class="text-center">
               <!-- new website button -->
+              {% if user.is_authenticated %}
               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
                 Add New Website
               </a>
+              {% endif %}
             </div>
 
           </div>
@@ -245,22 +251,35 @@ aria-hidden="true">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+
+
+
     <div class="modal-body mx-3">
       <div class="md-form mb-5">
         <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="cate_title" class="form-control validate">
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" id="cate_title" class="form-control validate" name="new_cate_title">
         <label data-error="wrong" data-success="right" for="form3">Category Title</label>
-      </div>
 
+
+      </div>
     </div>
+
     <div class="modal-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-primary btn-block" onclick="addNewCategory()" data-dismiss="modal">Add</button>
+     <input type="submit" class="btn btn-primary btn-block" onclick="addNewCategory()" value="Add">
     </div>
+    </form>
+
+
+
   </div>
 </div>
 </div>
 
 <!-- Add Website Form -->
+<form action="/hi/" method="post">
+    {% csrf_token %}
 <div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
 <div class="modal-dialog" role="document">
@@ -286,11 +305,13 @@ aria-hidden="true">
 
     </div>
     <div class="modal-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-primary btn-block" onclick="searchURL()" data-dismiss="modal">Search</button>
+      <input type="submit" class="btn btn-primary btn-block" value="Search">
     </div>
   </div>
 </div>
 </div>
+</form>
+
 
 <!-- Login in Form -->
 <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -368,4 +389,3 @@ aria-hidden="true">
 
     </body>
 </html>
-

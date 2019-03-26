@@ -23,6 +23,7 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load crispy_forms_tags %}
 
 <html class="loading" lang="en" data-textdirection="ltr">
   <head>
@@ -62,12 +63,12 @@
             <ul class="nav navbar-nav mr-auto float-left">
               <li class="nav-item d-block d-md-none"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
 
-              
+
             </ul>
 
             <ul class="nav navbar-nav float-right">
 
-            
+
 
             </ul>
           </div>
@@ -105,7 +106,7 @@
 
       </ul>
 
-      
+
     </div>
     <div class="navigation-background"></div>
   </div>
@@ -122,8 +123,8 @@
         </div>
         <div class="content-header-right col-md-8 col-12">
           <div class="breadcrumbs-top float-md-right">
-              
-            
+
+
 
           </div>
         </div>
@@ -143,7 +144,7 @@
                             {% csrf_token %}
                             <fieldset class="form-group">
                                 <legend class="border-bottom mb-4">Join Today</legend>
-                                {{ form }}
+                                {{ form | crispy }}
                             </fieldset>
                             <div class="form-group">
                                 <button class="btn btn-outline-info" type="submit">Sign Up</button>
