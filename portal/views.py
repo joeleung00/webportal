@@ -6,6 +6,14 @@ from django.shortcuts import redirect
 from .crawlpage import crawlpage
 from .tasks import process_grep_requests
 
+def check_no_repeat_name(request, categories):
+    new_category_title = request.POST['new_cate_title']
+    for category in categories:
+        if (new_category_title == category.title):
+            return False
+    return True
+
+
 def home(request):
     content = {}
 
@@ -14,36 +22,42 @@ def home(request):
         # show category that is belongs to user
         categories = Category.objects.filter(author=request.user)
 
-        if "new_cate_title" in request.POST:
-            should_add = True
-            new_category_name = request.POST['new_cate_title']
-            for category in categories:
-                if (new_category_name == category.title):
-                    should_add = False
+        content = {
+            'category_blocks': None,
+            'error': False
+        }
 
-            if (should_add):
+        if "new_cate_title" in request.POST:
+
+            if (check_no_repeat_name(request, categories)):
                 new_category = Category()
-                new_category.title = new_category_name
+                new_category.title = request.POST['new_cate_title']
                 new_category.author = request.user
                 new_category.save()
                 #add more so categories have been changed
                 categories = Category.objects.filter(author=request.user)
+            else:
+                # raise the error message, the category name is repeated.
+                pass
+
 
         # dealing with grep request
         if "crawllink" in request.POST and "message_title" in request.POST and "crawltag" in request.POST:
             url = request.POST["crawllink"]
             msg_title = request.POST["message_title"]
             crawltag = request.POST["crawltag"]
-            category_name = request.POST["category"]
+            category_id = request.POST["category_dropdown"]
             #  checkvalid()...
             element = crawlpage(url, crawltag)
 
+            # save message
             new_msg = Message()
             new_msg.title = msg_title
-            new_msg.category = categories.get(title = category_name)
+            new_msg.category = categories.get(pk = category_id)
             new_msg.content = ".."
             new_msg.save()
 
+            # save grep request
             new_grep = GrepRequest()
             new_grep.content_title = msg_title
             new_grep.selected_content = element
@@ -52,15 +66,13 @@ def home(request):
             new_grep.save()
 
 
-        category_blocks = [
+        content["category_blocks"] = [
             {
                 'category': category,
                 'messages': Message.objects.filter(category=category),
             } for category in categories
         ]
-        content = {
-            'category_blocks': category_blocks
-        }
+
     return render(request, 'portal/home.html', content)
 
 def about(request):
