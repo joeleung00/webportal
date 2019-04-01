@@ -9,3 +9,5 @@
 
 
 })(window);
+
+// delete un-used function
