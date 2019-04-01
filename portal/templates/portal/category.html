@@ -62,7 +62,12 @@
                           <form method="post">
                               {% csrf_token %}
                           <input type="hidden" name="Delete_msg" value= {{ message.id }}>
+                          <!--
+                          === origin ===
                           <input type="submit" value="Delete">
+                          -->
+                          <input type="button" value="Delete" data-toggle="modal" data-target="#confirm-submit">
+                          <!-- open the submit_form by "data-target" -->
                           </form>
                       {% endfor %}
                       <a href="{% url 'portal-home' %}"> Home page </a>
@@ -76,3 +81,23 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block submit_form %}
+<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirm Delete
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="#" id="submit" class="btn btn-warning">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

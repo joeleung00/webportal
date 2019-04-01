@@ -104,6 +104,8 @@
     <div class="main-menu-content">
       <!-- menu content -->
 
+      {% block left_menu %}
+
       <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
         <li class="active"><a href="{% url 'portal-home' %}"><i class="ft-home"></i>Dashboard</a>
         </li>
@@ -120,6 +122,8 @@
         <!-- end of list item for the category -->
 
       </ul>
+
+      {% endblock %}
 
       <!-- new category button -->
       {% if user.is_authenticated %}
@@ -234,10 +238,12 @@
 {% endblock %}
 
 <!-- ===========FORM============ -->
+{% block submit_form %}
+<div></div>
+{% endblock %}
 
 <!-- Add Category Form -->
-<div class="modal fade" id="modalAddCategoryForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
+<div class="modal fade" id="modalAddCategoryForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header text-center">
@@ -275,8 +281,7 @@ aria-hidden="true">
 <!-- Add Website Form -->
 <form action="/hi/" method="post">
     {% csrf_token %}
-<div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
+<div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <div class="modal-dialog" role="document">
   <div class="modal-content">
     <div class="modal-header text-center">
