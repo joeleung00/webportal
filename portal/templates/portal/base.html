@@ -39,11 +39,12 @@
     <!-- BEGIN Custom CSS-->
     <!-- END Custom CSS-->
   </head>
-  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
+  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns" data-color="bg-gradient-x-purple-blue"> <!-- style="background-color: #FFFFFF"  -->
 
     <!-- ==============TOP MENU============== -->
     <!-- Navigation Bar -->
-    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light">
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light" > <!-- style="background-color: #FFFFFF"  -->
+
       <div class="navbar-wrapper">
         <div class="navbar-container content">
           <div class="collapse navbar-collapse show" id="navbar-mobile">
@@ -71,18 +72,16 @@
               </li>
             </ul>
 
-            <ul class="nav navbar-nav float-right">
-
             <!-- Top Right Corner -->
             <!-- for the login, logout, user icon -->
-
+              <div class="text-center" id="login_logout_button">
               {% if user.is_authenticated %}
-                  <a href="{% url 'logout' %}"> Logout </a>
+                  <a href="{% url 'logout' %}"  class="btn btn-primary btn-block">Logout</a>
               {% else %}
-                  <a href="{% url 'login' %}"> Login </a>
+                  <a href="{% url 'login' %}"  class="btn btn-primary btn-block">Login</a>
               {% endif%}
+              </div>
 
-            </ul>
           </div>
         </div>
       </div>
@@ -104,15 +103,17 @@
     </div>
     <div class="main-menu-content">
       <!-- menu content -->
+
       <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li class="active"><a href="{% url 'portal-home' %}"><i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a>
+        <li class="active"><a href="{% url 'portal-home' %}"><i class="ft-home"></i>Dashboard</a>
         </li>
 
         <!-- list item for the category -->
+        <!-- need category data -->
 
         {% for category in categories %}
             <li class=" nav-item">
-            <a href="{% url 'portal-category' category.id  %}">{{ category.title }}</a>
+            <a href="{% url 'portal-category' category.id  %}"><i class="ft-layers"></i>{{ category.title }}</a>
             </li>
         {% endfor %}
 
@@ -138,6 +139,7 @@
       <div class="content-header row">
         <div class="content-header-left col-md-4 col-12 mb-2">
           <!-- Main page title -->
+          <br>
           {% block content_title %}
 
           <h3 class="content-header-title">Home</h3>
@@ -149,11 +151,13 @@
 
             <div class="text-center">
               <!-- new website button -->
+              {% block content_title_button %}
               {% if user.is_authenticated %}
               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
                 Add New Website
               </a>
               {% endif %}
+              {% endblock %}
             </div>
 
           </div>
@@ -171,7 +175,7 @@
           <div class="card">
               <div class="card-header">
                   <!-- title for the box -->
-                  <h4 class="card-title" id="heading-multiple-thumbnails">Multiple Thumbnail</h4>
+                  <h4 class="card-title">Dummy Box 1</h4>
                   <a class="heading-elements-toggle">
                       <i class="la la-ellipsis-v font-medium-3"></i>
                   </a>
@@ -191,7 +195,6 @@
               <!-- content for the box -->
               <div class="card-content collapse show">
                   <div class="card-body">
-                      <h4 class="card-title">Content title</h4>
                       <p class="card-text">Jelly beans sugar plum cheesecake cookie oat cake soufflé.Tootsie roll bonbon liquorice tiramisu pie powder.Donut sweet
                           roll marzipan pastry cookie cake tootsie roll oat cake cookie.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. </p>
                       <p class="card-text">Sweet roll marzipan pastry halvah. Cake bear claw sweet. Tootsie roll pie marshmallow lollipop chupa chups donut fruitcake
@@ -205,7 +208,7 @@
   <div class="col-xl-4 col-lg-6 col-md-12">
       <div class="card">
         <div class="card-header">
-            <h4 class="card-title" id="heading-multiple-thumbnails">Recent products</h4>
+            <h4 class="card-title">Dummy Box 2</h4>
             <a class="heading-elements-toggle">
                 <i class="la la-ellipsis-v font-medium-3"></i>
             </a>
@@ -218,8 +221,8 @@
             </div>
         </div>
           <div class="card-content collapse show">
-              <div class="card-body" id='box2_text'>
-                  <h6 class="card-subtitle text-muted">Carousel Card With Header & Footer</h6>
+              <div class="card-body">
+                  <p class="card-text">Carousel Card With Header & Footer</p>
               </div>
 
           </div>
@@ -305,37 +308,6 @@ aria-hidden="true">
 </form>
 
 
-<!-- Login in Form -->
-<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Login</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body mx-3">
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="user_name" class="form-control validate">
-        <label data-error="wrong" data-success="right" for="form3">Name</label>
-      </div>
-
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="user_password" class="form-control validate">
-        <label data-error="wrong" data-success="right" for="form3">Password</label>
-      </div>
-
-    </div>
-    <div class="modal-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-primary btn-block" onclick="addNewCategory()" data-dismiss="modal">Login</button>
-    </div>
-  </div>
-</div>
-</div>
       </div>
     </div>
   </div>

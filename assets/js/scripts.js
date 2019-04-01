@@ -9,17 +9,3 @@
 
 
 })(window);
-
-function searchURL(){
-  document.getElementById('box1_text').innerHTML = "Call Search Function, Choose Website's Element!";
-}
-
-function addNewCategory(){
-
-  var title = document.getElementById('cate_title').value;
-  var userid = 1;
-
-  // send to server
-  // JSON.stringify()
-
-}

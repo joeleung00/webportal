@@ -57,3 +57,5 @@ def category(request, pk):
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
+
+# category.html need category data for list item of Left menu
