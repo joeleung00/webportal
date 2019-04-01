@@ -1,3 +1,15 @@
-{% block content %}
+{% extends 'portal/base.html' %}
+
+{% block page_title %}
+<title>About</title>
+{% endblock %}
+
+{% block content_title %}
     <h1>About Page</h1>
-{% endblock content %}
+{% endblock %}
+
+{% block content %}
+<div class="row match-height">
+  <div> about content </div>
+</div>
+{% endblock %}

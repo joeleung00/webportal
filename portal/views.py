@@ -30,7 +30,9 @@ def home(request):
         content = {
             'categories': categories
         }
-    return render(request, 'portal/home.html', content)
+    # change homt.html to base.html for testing, should be changed back
+    return render(request, 'portal/base.html', content)
+    # return render(request, 'portal/home.html', content)
 
 def about(request):
     return render(request, 'portal/about.html')
