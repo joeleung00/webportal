@@ -2,6 +2,12 @@
 
 {% block content_title %}
     <h3 class="content-header-title">{{ category.title }}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+    <input type="hidden" name="Delete_cate" value= {{ category.id }}>
+    <input type="submit" value="Delete Category">
+    </form>
 {% endblock %}
 
 <!-- Need category data for list item of Left menu in base.html -->
@@ -10,6 +16,10 @@
 <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
   <li class=" nav-item"><a href="{% url 'portal-home' %}"><i class="ft-home"></i>Dashboard</a>
   </li>
+  <li class=" nav-item">
+  <a href="{% url 'portal-category' category.id  %}">Need category data</a>
+  </li>
+
   <!-- list item for the category -->
   {% for category in categories %}
       <li class=" nav-item">
@@ -23,6 +33,7 @@
 {% block content%}
 <div class="row match-height">
   <!-- Card -->
+  {% for message in messages %}
   <div class="col-xl-4 col-lg-6 col-md-12">
           <div class="card">
               <div class="card-header">
@@ -50,13 +61,6 @@
 
                       <!-- Origin version message -->
 
-                      <form method="post">
-                          {% csrf_token %}
-                      <input type="hidden" name="Delete_cate" value= {{ category.id }}>
-                      <input type="submit" value="Delete Category">
-                      </form>
-
-                      {% for message in messages %}
                           <h3> {{ message.title }} </h3>
                           <p> {{ message.content }} </p>
                           <form method="post">
@@ -66,10 +70,10 @@
                           === origin ===
                           <input type="submit" value="Delete">
                           -->
-                          <input type="button" value="Delete" data-toggle="modal" data-target="#confirm-submit">
+                          <input type="button" value="Delete" data-toggle="modal" data-target="#confirm-submit{{ message.id }}">
                           <!-- open the submit_form by "data-target" -->
                           </form>
-                      {% endfor %}
+
                       <a href="{% url 'portal-home' %}"> Home page </a>
 
                       <!-- End of Origin version message -->
@@ -79,25 +83,37 @@
 
           </div>
     </div>
+    {% endfor %}
 </div>
 {% endblock content %}
 
 {% block submit_form %}
-<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                Confirm Delete
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete?
-            </div>
+  {% for message in messages %}
+  <!-- confirmation of delete message -->
+    <div class="modal fade" id="confirm-submit{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="Delete_msg" value= {{ message.id }}>
+                    <div class="modal-header">
+                        <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete? {{ message.id }}
+                    </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a href="#" id="submit" class="btn btn-warning">Submit</a>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <!-- submit the form, not yet finish for submitting the delete info. to server -->
+                        <input type="submit" value="Delete" class="btn btn-warning">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+  {% endfor %}
 {% endblock %}
