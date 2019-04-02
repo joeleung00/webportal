@@ -24,8 +24,19 @@ function autocomplete(inp, arr) {
       /*append the DIV element as a child of the autocomplete container:*/
       this.parentNode.appendChild(a);
 
-      $.post( "ajax/test.html", function( data ) {
+      /*$.post( "ajax/test.html", function( data ) {
         $( ".result" ).html( data );
+      });*/
+      $.ajax({
+          url: '/recommendation',
+          type: 'post',
+          dataType: 'json',
+          contentType: 'application/json',
+          success: function (data) {
+            alert(data);
+            //$('#target').html(data.msg);
+          },
+          data: JSON.stringify(val)
       });
 
       var shown = 0;

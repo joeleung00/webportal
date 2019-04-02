@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from .crawlpage import crawlpage
 from .tasks import process_grep_requests
+import json
+from django.http import JsonResponse
 
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
@@ -99,3 +101,10 @@ def category(request, pk):
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
+
+def recommend(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            json_data = json.loads(request.body)
+            print(json_data)
+    return JsonResponse({'foo':'bar'})
