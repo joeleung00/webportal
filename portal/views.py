@@ -1,12 +1,14 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Category, Message, GrepRequest
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
+from .models import Category, Message, GrepRequest
 from .crawlpage import crawlpage
 from .tasks import process_grep_requests
-import json
-from django.http import JsonResponse
 
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
@@ -102,9 +104,21 @@ def category(request, pk):
     }
     return render(request, 'portal/category.html', content)
 
+# Note that we are not afraid of identity forgery for recommendation
+# as it is public, so we use csrf_exempt to exempt the identity check,
+# For security-critical tasks, DO NOT blindly copy this tag.
+@csrf_exempt
 def recommend(request):
+    reply = JsonResponse({'option': json.dumps([]), 'url': json.dumps([])})
     if request.user.is_authenticated:
         if request.method == 'POST':
             json_data = json.loads(request.body)
-            print(json_data)
-    return JsonResponse({'foo':'bar'})
+            if 'search_string' in json_data:
+                search_string = json_data['search_string']
+
+                # Generate at most 10 options
+                suggestions = ["CENG2010","CENG2400","ESTR2100","CENG3150","CENG3410","CENG3420"]
+                urls = ["a", "b", "c", "d", "e", "f"] # Auto filling URL is not implemented yet
+                reply = JsonResponse({'option': json.dumps(suggestions), 'url': json.dumps(urls)})
+
+    return reply

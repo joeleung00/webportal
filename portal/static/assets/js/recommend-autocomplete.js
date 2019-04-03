@@ -24,45 +24,51 @@ function autocomplete(inp, arr) {
       /*append the DIV element as a child of the autocomplete container:*/
       this.parentNode.appendChild(a);
 
-      /*$.post( "ajax/test.html", function( data ) {
-        $( ".result" ).html( data );
-      });*/
       $.ajax({
-          url: '/recommendation',
+          url: '/recommendation/',
           type: 'post',
           dataType: 'json',
           contentType: 'application/json',
           success: function (data) {
-            alert(data);
-            //$('#target').html(data.msg);
-          },
-          data: JSON.stringify(val)
-      });
-
-      var shown = 0;
-      /*for each item in the array...*/
-      for (i = 0; (i < arr.length) && (shown < 10); i++) {
-        /*check if the item starts with the same letters as the text field value:*/
-        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-          /*create a DIV element for each matching element:*/
-          b = document.createElement("DIV");
-          /*make the matching letters bold:*/
-          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-          b.innerHTML += arr[i].substr(val.length);
-          /*insert a input field that will hold the current array item's value:*/
-          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-          /*execute a function when someone clicks on the item value (DIV element):*/
+            //alert(data['option']);
+            var suggestions = JSON.parse(data['option']);
+            var shown = 0;
+            /*for each item in the array...*/
+            for (i = 0; (i < suggestions.length) && (shown < 10); i++) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              if (suggestions[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                /*make the matching letters bold:*/
+                b.innerHTML = "<strong>" + suggestions[i].substr(0, val.length) + "</strong>";
+                b.innerHTML += suggestions[i].substr(val.length);
+              } else {
+                b.innerHTML = suggestions[i];
+              }
+              /*insert a input field that will hold the current suggestionsay item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + suggestions[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
               b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
-              inp.value = this.getElementsByTagName("input")[0].value;
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              closeAllLists();
-          });
-          a.appendChild(b);
-          shown++;
-        }
-      }
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+              shown++;
+            }
+          },
+          /*error: function(data){
+             var json = $.parseJSON(data);
+             alert(json.error);
+          },*/
+          data: JSON.stringify({"search_string": val})
+        }).done(function(res){
+          //alert("Success"); // For debug
+        }).fail(function(res){
+          //alert("Fail"); // For debug
+        });
+
   });
   /*execute a function presses a key on the keyboard:*/
   inp.addEventListener("keydown", function(e) {
