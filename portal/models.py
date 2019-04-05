@@ -5,9 +5,13 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     title = models.CharField(max_length=100)
     author =  models.ForeignKey(User, on_delete=models.CASCADE)
+    position = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['position']
 
 class Message(models.Model):
     # This would be used for storing GrepReply

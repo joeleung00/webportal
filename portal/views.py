@@ -49,6 +49,7 @@ def home(request):
                     new_category = Category()
                     new_category.title = request.POST['new_cate_title']
                     new_category.author = request.user
+                    new_category.position = len(categories) + 1
                     new_category.save()
                     #add more so categories have been changed
                     categories = Category.objects.filter(author=request.user)
@@ -86,6 +87,7 @@ def home(request):
                 return HttpResponse(error)
 
 
+
         content["category_blocks"] = [
             {
                 'category': category,
@@ -95,10 +97,38 @@ def home(request):
 
     return render(request, 'portal/home.html', content)
 
+def reorder(request):
+    categories = Category.objects.filter(author=request.user)
+
+    content = {
+        'category_blocks': None,
+    }
+
+    if "order[]" in request.POST:
+        order = request.POST.getlist('order[]')
+        for i, id in enumerate(order):
+            category = categories.get(pk = id)
+            category.position = i + 1
+            category.save()
+        categories.order_by('position')
+
+    content["category_blocks"] = [
+        {
+            'category': category,
+            'messages': Message.objects.filter(category=category),
+        } for category in categories
+    ]
+    return render(request, 'portal/home.html', content)
+
+    
 def about(request):
     process_grep_requests()
     return render(request, 'portal/about.html')
 
+def reasign_order(categories):
+    for i, category in enumerate(categories):
+        category.position = i + 1
+        category.save()
 
 def category(request, pk):
     content = {}
@@ -108,6 +138,8 @@ def category(request, pk):
 
         if "Delete_cate" in request.POST:
             category.delete()
+            categories = Category.objects.filter(author=request.user)
+            reasign_order(categories)
             return redirect('portal-home')
 
         if "Delete_msg" in request.POST:
