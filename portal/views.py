@@ -64,6 +64,7 @@ def home(request):
             # save grep request
             new_grep = GrepRequest()
             new_grep.content_title = msg_title
+            new_grep.crawltag = crawltag
             new_grep.selected_content = element
             new_grep.url = url
             new_grep.message = new_msg
@@ -115,10 +116,13 @@ def recommend(request):
             json_data = json.loads(request.body)
             if 'search_string' in json_data:
                 search_string = json_data['search_string']
-
+                grep_requests = GrepRequest.objects.filter(content_title__icontains=search_string)
+                suggestions = [grep_request.content_title for grep_request in grep_requests]
+                urls = [grep_request.url for grep_request in grep_requests]
+                crawltags = [grep_request.crawltag for grep_request in grep_requests]
                 # Generate at most 10 options
-                suggestions = ["CENG2010","CENG2400","ESTR2100","CENG3150","CENG3410","CENG3420"]
-                urls = ["a", "b", "c", "d", "e", "f"] # Auto filling URL is not implemented yet
-                reply = JsonResponse({'option': json.dumps(suggestions), 'url': json.dumps(urls)})
+                #suggestions = ["CENG2010","CENG2400","ESTR2100","CENG3150","CENG3410","CENG3420"]
+                #urls = ["a", "b", "c", "d", "e", "f"] # Auto filling URL is not implemented yet
+                reply = JsonResponse({'option': json.dumps(suggestions), 'url': json.dumps(urls), 'crawltag': json.dumps(crawltags)})
 
     return reply
