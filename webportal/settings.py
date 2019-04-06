@@ -40,8 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    'background_task',
+    'django_crontab',
 ]
+
+CRONJOBS = [
+    ('*/5 * * * *', 'portal.tasks.cron_update_grep_requests', '>> ~/csci3100.server.log')
+]
+CRONTAB_LOCK_JOBS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
