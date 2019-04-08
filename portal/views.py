@@ -94,10 +94,15 @@ def category(request, pk):
             message_id = request.POST["Delete_msg"]
             Message.objects.get(pk=message_id).delete()
 
+        if "Delete_multi_msg" in request.POST:
+            messages_list = request.POST.getlist['Delete_multi_msg']
+            for message_id in messages_list:
+                print ("message_id: ", message_id)
+                Message.objects.get(pk=message_id).delete()
+
+
     content = {
         'category' : category,
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
-
-# category.html need category data for list item of Left menu

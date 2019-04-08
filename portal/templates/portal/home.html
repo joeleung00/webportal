@@ -15,7 +15,9 @@
     <meta name="description" content="CSCI 3100 Project Home Page">
     <meta name="keywords" content="dashboard, CSCI3100, Project">
     <meta name="author" content="Group 17">
+    {% block page_title %}
     <title>Dashboard</title>
+    {% endblock %}
     <link rel="apple-touch-icon" href="{% static 'theme-assets/images/ico/apple-icon-120.png' %">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'theme-assets/images/ico/favicon.ico' %}">
     <link href="https://fonts.googleapis.com/css?family=Muli:300,300i,400,400i,600,600i,700,700i%7CComfortaa:300,400,700" rel="stylesheet">
@@ -36,10 +38,11 @@
     <!-- BEGIN Custom CSS-->
     <!-- END Custom CSS-->
   </head>
-  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
+  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns"  style="background-color: #CCCCCC" > <!-- data-color="bg-gradient-x-purple-blue" -->
 
     <!-- ==============TOP MENU============== -->
-    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light">
+    <!-- Navigation Bar -->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light" style="background-color: #BBBBBB"> <!--   -->
       <div class="navbar-wrapper">
         <div class="navbar-container content">
           <div class="collapse navbar-collapse show" id="navbar-mobile">
@@ -72,11 +75,13 @@
             <!-- Top Right Corner -->
             <!-- for the login, logout, user icon -->
 
+              <div class="text-center" id="login_logout_button">
               {% if user.is_authenticated %}
-                  <a href="{% url 'logout' %}"> Logout </a>
+                  <a href="{% url 'logout' %}"  class="btn btn-primary btn-block">Logout</a>
               {% else %}
-                  <a href="{% url 'login' %}"> Login </a>
+                  <a href="{% url 'login' %}"  class="btn btn-primary btn-block">Login</a>
               {% endif%}
+              </div>
 
             </ul>
           </div>
@@ -98,7 +103,7 @@
     </div>
     <div class="main-menu-content">
       <!-- menu content -->
-      <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+      <ul class="navigation navigation-main connectedSortable" id="main-menu-navigation" data-menu="menu-navigation">
         <li class="active"><a href=""><i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a>
         </li>
 
@@ -106,13 +111,74 @@
 
         {% for block in category_blocks %}
             <li class=" nav-item">
-            <a href="{% url 'portal-category' block.category.id  %}">{{ block.category.title }}</a>
+            <a href="{% url 'portal-category' block.category.id  %}"><i class="ft-layers"></i>{{ block.category.title }}</a>
             </li>
         {% endfor %}
 
         <!-- end of list item for the category -->
 
       </ul>
+
+      <!-- Submit Form for Delete Category message -->
+      <!-- !!!! Put those form here to avoid covering the form !!!! -->
+
+      {% block submit_form %}
+        {% if user.is_authenticated %}
+        <div class="modal fade" id="confirm-submit-cate{{ category.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="Delete_cate" value= {{ category.id }}>
+                        <div class="modal-header">
+                            <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Category</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete?
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <!-- submit the form, not yet finish for submitting the delete info. to server -->
+                            <input type="submit" value="Delete" class="btn btn-warning">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% for message in messages %}
+        <!-- confirmation of delete message -->
+          <div class="modal fade" id="confirm-submit{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <form method="post">
+                          {% csrf_token %}
+                          <input type="hidden" name="Delete_msg" value= {{ message.id }}>
+                          <div class="modal-header">
+                              <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete</h4>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                              Are you sure you want to delete?
+                          </div>
+
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                              <!-- submit the form, not yet finish for submitting the delete info. to server -->
+                              <input type="submit" value="Delete" class="btn btn-warning">
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+        {% endfor %}
+        {% endif %}
+      {% endblock %}
 
       <!-- new category button -->
       {% if user.is_authenticated %}
@@ -132,6 +198,7 @@
       <div class="content-header row">
         <div class="content-header-left col-md-4 col-12 mb-2">
           <!-- Main page title -->
+          <br>
           <h3 class="content-header-title">Home</h3>
         </div>
         <div class="content-header-right col-md-8 col-12">
@@ -140,6 +207,7 @@
             <div class="text-center">
               <!-- new website button -->
               {% if user.is_authenticated %}
+              <br>
               <a href="" id="new-website" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
                 Add New Website
               </a>
@@ -152,7 +220,7 @@
       <div class="content-body">
 
 <!-- MAIN Content -->
-
+{% block content %}
 <div class="row match-height">
     {% for block in category_blocks %}
         <div class="col-xl-4 col-lg-6 col-md-12">
@@ -169,7 +237,7 @@
                         <ul class="list-inline mb-0">
                             <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
                             <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                            <li><a data-action="close"><i class="ft-x"></i></a></li>
+                            <li><a data-toggle="modal" data-target="#confirm-submit-cate{{ category.id }}"><i class="ft-x"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -188,6 +256,7 @@
     {% endfor %}
 
 </div>
+{% endblock %}
 <!-- ===========FORM============ -->
 
 <!-- Add Category Form -->
@@ -352,10 +421,13 @@ aria-hidden="true">
     <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->
     <!-- BEGIN PAGE CONTROL JS-->
+    <!-- JQuery JS-->
+    <script src="jquery-3.3.1.min.js"></script>
     <script type = "text/javascript" src = "{% static 'assets/js/scripts.js' %}" ></script>
     <script src="{% static 'assets/js/loading-actions.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/js/recommend-autocomplete.js' %}"></script>
     <!-- END PAGE CONTROL JS-->
+
 
     </body>
 </html>

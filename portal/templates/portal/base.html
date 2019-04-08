@@ -35,15 +35,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/menu/menu-types/vertical-menu.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/colors/palette-gradient.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/pages/dashboard-ecommerce.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/form-autocomplete.css' %}">
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
     <!-- END Custom CSS-->
   </head>
-  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns" data-color="bg-gradient-x-purple-blue"> <!-- style="background-color: #FFFFFF"  -->
+  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns"  style="background-color: #FFFFFF" > <!-- data-color="bg-gradient-x-purple-blue" -->
 
     <!-- ==============TOP MENU============== -->
     <!-- Navigation Bar -->
-    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light" > <!-- style="background-color: #FFFFFF"  -->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light" style="background-color: #FFFFFF"> <!--   -->
 
       <div class="navbar-wrapper">
         <div class="navbar-container content">
@@ -151,9 +152,7 @@
           <!-- Main page title -->
           <br>
           {% block content_title %}
-
           <h3 class="content-header-title">Home</h3>
-
           {% endblock %}
         </div>
         <div class="content-header-right col-md-8 col-12">
@@ -163,6 +162,7 @@
               <!-- new website button -->
               {% block content_title_button %}
               {% if user.is_authenticated %}
+              <br>
               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
                 Add New Website
               </a>
@@ -178,142 +178,10 @@
 
 <!-- MAIN Content -->
 {% block content %}
-
-<div class="row match-height">
-  <!-- first card (dummy) -->
-  <div class="col-xl-4 col-lg-6 col-md-12">
-          <div class="card">
-              <div class="card-header">
-                  <!-- title for the box -->
-                  <h4 class="card-title">Dummy Box 1</h4>
-                  <a class="heading-elements-toggle">
-                      <i class="la la-ellipsis-v font-medium-3"></i>
-                  </a>
-
-                  <!-- button for the box -->
-                  <div class="heading-elements">
-                      <ul class="list-inline mb-0">
-                          <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                          <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                          <li><a data-action="close"><i class="ft-x"></i></a></li>
-                      </ul>
-                  </div>
-                  <!-- end of button for the box -->
-
-              </div>
-
-              <!-- content for the box -->
-              <div class="card-content collapse show">
-                  <div class="card-body">
-                      <p class="card-text">Jelly beans sugar plum cheesecake cookie oat cake soufflé.Tootsie roll bonbon liquorice tiramisu pie powder.Donut sweet
-                          roll marzipan pastry cookie cake tootsie roll oat cake cookie.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. </p>
-                      <p class="card-text">Sweet roll marzipan pastry halvah. Cake bear claw sweet. Tootsie roll pie marshmallow lollipop chupa chups donut fruitcake
-                          cake.Jelly beans sugar plum cheesecake cookie oat cake soufflé. Tart lollipop carrot cake sugar plum. Marshmallow
-                          wafer tiramisu jelly beans.</p>
-                  </div>
-              </div>
-          </div>
-  </div>
-  <!-- second card (dummy) -->
-  <div class="col-xl-4 col-lg-6 col-md-12">
-      <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Dummy Box 2</h4>
-            <a class="heading-elements-toggle">
-                <i class="la la-ellipsis-v font-medium-3"></i>
-            </a>
-            <div class="heading-elements">
-                <ul class="list-inline mb-0">
-                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                    <li><a data-action="close"><i class="ft-x"></i></a></li>
-                </ul>
-            </div>
-        </div>
-          <div class="card-content collapse show">
-              <div class="card-body">
-                  <p class="card-text">Carousel Card With Header & Footer</p>
-              </div>
-
-          </div>
-      </div>
-  </div>
-
-</div>
-
 {% endblock %}
 
 <!-- ===========FORM============ -->
 
-<!-- Add Category Form -->
-<div class="modal fade" id="modalAddCategoryForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Add New Category</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-
-
-    <div class="modal-body mx-3">
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" id="cate_title" class="form-control validate" name="new_cate_title">
-        <label data-error="wrong" data-success="right" for="form3">Category Title</label>
-
-
-      </div>
-    </div>
-
-    <div class="modal-footer d-flex justify-content-center">
-     <input type="submit" class="btn btn-primary btn-block" onclick="addNewCategory()" value="Add">
-    </div>
-    </form>
-
-
-
-  </div>
-</div>
-</div>
-
-<!-- Add Website Form -->
-<form action="/hi/" method="post">
-    {% csrf_token %}
-<div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Add New Website</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body mx-3">
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="web_title" class="form-control validate">
-        <label data-error="wrong" data-success="right" for="form3">Website Title</label>
-      </div>
-
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="web_URL" class="form-control validate">
-        <label data-error="wrong" data-success="right" for="form3">Website URL</label>
-      </div>
-
-    </div>
-    <div class="modal-footer d-flex justify-content-center">
-      <input type="submit" class="btn btn-primary btn-block" value="Search">
-    </div>
-  </div>
-</div>
-</div>
-</form>
 
 
       </div>
@@ -343,20 +211,24 @@
 
 
 
-    <!-- BEGIN VENDOR JS-->
-    <script src="{% static 'theme-assets/vendors/js/vendors.min.js' %}" type="text/javascript"></script>
-    <!-- BEGIN VENDOR JS-->
-    <!-- BEGIN PAGE VENDOR JS-->
-    <script src="{% static 'theme-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
-    <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN CHAMELEON  JS-->
-    <script src="{% static 'theme-assets/js/core/app-menu-lite.js' %}" type="text/javascript"></script>
-    <script src="{% static 'theme-assets/js/core/app-lite.js' %}" type="text/javascript"></script>
-    <!-- END CHAMELEON  JS-->
-    <!-- BEGIN PAGE LEVEL JS-->
-    <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
-    <!-- END PAGE LEVEL JS-->
-    <script type = "text/javascript" src = "{% static 'assets/js/scripts.js' %}" ></script>
+  <!-- BEGIN VENDOR JS-->
+  <script src="{% static 'theme-assets/vendors/js/vendors.min.js' %}" type="text/javascript"></script>
+  <!-- BEGIN VENDOR JS-->
+  <!-- BEGIN PAGE VENDOR JS-->
+  <script src="{% static 'theme-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
+  <!-- END PAGE VENDOR JS-->
+  <!-- BEGIN CHAMELEON  JS-->
+  <script src="{% static 'theme-assets/js/core/app-menu-lite.js' %}" type="text/javascript"></script>
+  <script src="{% static 'theme-assets/js/core/app-lite.js' %}" type="text/javascript"></script>
+  <!-- END CHAMELEON  JS-->
+  <!-- BEGIN PAGE LEVEL JS-->
+  <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
+  <!-- END PAGE LEVEL JS-->
+  <!-- BEGIN PAGE CONTROL JS-->
+  <script type = "text/javascript" src = "{% static 'assets/js/scripts.js' %}" ></script>
+  <script src="{% static 'assets/js/loading-actions.js' %}"></script>
+  <script type="text/javascript" src="{% static 'assets/js/recommend-autocomplete.js' %}"></script>
+  <!-- END PAGE CONTROL JS-->
 
 
     </body>
