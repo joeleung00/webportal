@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.home, name='portal-home'),
     path('about/', views.about, name='portal-about'),
     #path("crawl/", crawlpage.crawlpage, name='crawl')
+    path('calendar/', views.calendar),
 ]

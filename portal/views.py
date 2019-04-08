@@ -6,6 +6,13 @@ from django.shortcuts import redirect
 from .crawlpage import crawlpage
 from .tasks import process_grep_requests
 
+import datetime
+import pickle
+import os.path
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
     for category in categories:
@@ -106,3 +113,65 @@ def category(request, pk):
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
+
+
+def google_calendar_connection():
+
+    SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+    creds = None
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+
+    # Comment below three rows of code to require user to authorize everytime
+    if os.path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'client_secret.json', SCOPES)
+            creds = flow.run_local_server()
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    service = build('calendar', 'v3', credentials=creds)
+    
+    return service
+
+def calendar(request):
+    content = {}
+
+    Gcal = google_calendar_connection()
+
+    # hard code insert events to calendar for testing
+    GMT_OFF = '+08:00'      
+    EVENT = {
+        'summary': 'CSCI3100 HW',
+        'start':  {'dateTime': '2019-04-07T16:30:00%s' % GMT_OFF},
+        'end':    {'dateTime': '2019-04-07T17:00:00%s' % GMT_OFF},
+    }
+
+    e = Gcal.events().insert(calendarId='primary',sendNotifications=True, body=EVENT).execute()
+
+    categories = Category.objects.filter(author=request.user)
+    
+    content = {
+            'category_blocks': None,
+            'error': False
+        }
+
+    content["category_blocks"] = [
+            {
+                'category': category,
+                'messages': Message.objects.filter(category=category),
+            } for category in categories
+        ]
+
+    return render(request, 'portal/home.html', content)
