@@ -1,10 +1,30 @@
 #!/bin/bash
 
-python manage.py crontab add
-sleep 1
-python manage.py crontab add
-#python manage.py crontab show
-#python manage.py crontab remove
+function refresh_crontab() {
+	python manage.py crontab add
+}
 
+function print_crontab() {
+	python manage.py crontab show
+}
+
+function cleanup() {
+	python manage.py crontab remove
+	echo Clean up done
+	exit 1
+}
+
+
+# Preparation
+trap 'cleanup' SIGINT
+refresh_crontab
+sleep 1
+refresh_crontab
+print_crontab
+
+# Running
 python manage.py runserver
+
+# Ending cleanup
+cleanup
 

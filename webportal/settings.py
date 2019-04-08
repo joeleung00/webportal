@@ -44,8 +44,9 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('*/5 * * * *', 'portal.tasks.cron_update_grep_requests', '>> ~/csci3100.server.log')
+    ('*/10 * * * *', 'portal.tasks.cron_update_grep_requests', '>> ~/csci3100.server.log')
 ]
+# Disallow multiple instances of the same cron command to be executed simultaneously
 CRONTAB_LOCK_JOBS = True
 
 MIDDLEWARE = [
