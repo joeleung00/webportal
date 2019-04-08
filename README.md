@@ -21,6 +21,7 @@ uwsgi
 django-crispy-forms
 urllib3
 beautifulsoup4
+lxml
 django-crontab
 
 ### Run the demo web crawler py in cmd
