@@ -145,20 +145,26 @@ def google_calendar_connection():
     
     return service
 
-def calendar(request):
-    content = {}
+def createEvent(Gcal, title, startDate, startTime, endDate, endTime):
+    
+    # HK timezone
+    GMT_OFF = '+08:00'
 
-    Gcal = google_calendar_connection()
-
-    # hard code insert events to calendar for testing
-    GMT_OFF = '+08:00'      
     EVENT = {
-        'summary': 'CSCI3100 HW',
-        'start':  {'dateTime': '2019-04-07T16:30:00%s' % GMT_OFF},
-        'end':    {'dateTime': '2019-04-07T17:00:00%s' % GMT_OFF},
+        'summary': title,
+        'start':  {'dateTime': '%sT%s%s' % (startDate, startTime, GMT_OFF)},
+        'end':    {'dateTime': '%sT%s%s' % (endDate, endTime, GMT_OFF)},
     }
 
     e = Gcal.events().insert(calendarId='primary',sendNotifications=True, body=EVENT).execute()
+
+def calendar(request):
+    content = {}
+    
+    Gcal = google_calendar_connection()
+
+    # example of calling createEvent function
+    createEvent(Gcal, '3100project', '2019-04-08', '18:00:00', '2019-04-08', '20:00:00')
 
     categories = Category.objects.filter(author=request.user)
     
