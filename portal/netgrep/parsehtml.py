@@ -37,27 +37,31 @@ class ParseHtml:
             return ''
 
     @staticmethod
-    def convert_lxml_elements_to_string(target_elems):
+    def convert_lxml_element_to_string(target_elem, truncate=-1):
         '''
         Input:
-            list<lxml.etree._Element> target_elems
-                the elements to be converted
+            lxml.etree._Element | string target_elem
+                the element to be converted
+                if it is error message, it is of string type
+            int truncate
+                maximum number of characters allowed
+                if truncated, "..." will be appended such that total length is exactly truncate
         Output:
             string
-                a string concatenating all strings in target_elems
+                a string concatenating all strings in target_elem
         '''
 
         result = ''
-        try:
-            iter_tester = iter(target_elems)
-            for match in target_elems:
-                if hasattr(match, 'itertext') and callable(match.itertext):
-                    for string in match.itertext():
-                        if isinstance(string, str):
-                            result += ' ' + string
-        except TypeError as te:
-            pass # target_elems is not iterable
+        if hasattr(target_elem, 'itertext') and callable(target_elem.itertext):
+            for string in target_elem.itertext():
+                if isinstance(string, str):
+                    result += ' ' + string
+        elif isinstance(target_elem, str):
+            result += ' ' + target_elem
         result = re.sub('\s+', ' ', result).strip()
+        if truncate >= 3:
+            if len(result) > truncate:
+                result = result[0: truncate - 3] + "..."
         return result
 
     @classmethod
@@ -150,19 +154,43 @@ class ParseHtml:
             string url
                 The url of the target webpage
         Output:
-            lxml.etree._Element
-                lxml.etree._Element: tag having the first exact match for each full_tag in full_tags
+            list<lxml.etree._Element>
+                lxml.etree._Element: elements having the first exact match for xpath_pattern
+                empty list is returned if target is not found
         '''
 
-        http = urllib3.PoolManager() # TODO: Use centralized webpage getter
-        page = http.request('GET', url)
-        html_str = page.data.decode("utf-8")
+        # TODO: Use centralized webpage getter
+        http_pool = urllib3.PoolManager(
+            timeout=urllib3.Timeout(connect=1.0,  read=2.0),
+            retries=urllib3.Retry(2, redirect=2)
+        )
+        try:
+            page = http_pool.request('GET', url)
+            html_str = page.data.decode("utf-8")
 
-        html_elem = etree.HTML(html_str)
-        matches = html_elem.xpath(xpath_pattern)
+            html_elem = etree.HTML(html_str)
+            try:
+                matches = html_elem.xpath(xpath_pattern)
+            except etree.XPathSyntaxError as e:
+                return ["Error: invalid selector syntax: {}".format(e)]
+            except etree.XPathEvalError as e:
+                return ["Error: cannot evaluate selector format: {}".format(e)]
 
-        # TODO: check if matches fails
-        return matches
+            return matches
+        except urllib3.exceptions.BodyNotHttplibCompatible:
+            return ["Error: target site cannot be parsed"]
+        except urllib3.exceptions.ConnectionError:
+            return ["Error: error occurs during connection"]
+        except urllib3.exceptions.NewConnectionError:
+            return ["Error: fails to connect"]
+        except urllib3.exceptions.TimeoutError:
+            return ["Error: connection timeout"]
+        except urllib3.exceptions.MaxRetryError:
+            return ["Error: too many retries"]
+        except Exception as e:
+            print("FATAL: unexpected error. ", e)
+            raise
+        return ["Error: unknown"]
 
 
     ''' ********** Below are private methods ********** '''
@@ -185,18 +213,29 @@ class ParseHtml:
 
         if parser != 'html.parser':
             raise NotImplemented('netgrep: only html.parser is currently supported')
-        http_pool = urllib3.PoolManager() # TODO: Should be moved as class variable later to avoid multiple allocation
+
+        # TODO: Should be moved as class variable later to avoid multiple allocation
         # TODO: Cache retrieved webpages and only refresh every some intervals
+        http_pool = urllib3.PoolManager(
+            timeout=urllib3.Timeout(connect=1.0,  read=2.0),
+            retries=urllib3.Retry(2, redirect=2)
+        )
         try:
             page = http_pool.request('GET', url)
             soup = BeautifulSoup(page.data, parser)
             return soup
-        except http_pool.exceptions.Timeout:
+        except urllib3.exceptions.BodyNotHttplibCompatible:
             return None
-        except http_pool.exceptions.TooManyRedirects:
+        except urllib3.exceptions.ConnectionError:
+            return None
+        except urllib3.exceptions.NewConnectionError:
+            return None
+        except urllib3.exceptions.TimeoutError:
+            return None
+        except urllib3.exceptions.MaxRetryError:
             # TODO: raise more meaningful message
             return None
-        except http_pool.exceptions.RequestException as e:
+        except Exception as e:
             print("FATAL: unexpected error. ", e)
             raise
 
@@ -259,6 +298,9 @@ if __name__ == "__main__":
             else:
                 print("Not found D:", end='\n\n')
     if testcase == 3:
+        #siuon_url = 'fake'
         xpath_pattern = '//*[(@id = "news")]'
+        xpath_pattern = 'randomwrongformat'
         matches = ParseHtml.retrieve_xpath_matches(xpath_pattern, siuon_url)
-        print(ParseHtml.convert_lxml_elements_to_string(matches))
+        for elem in matches:
+            print(ParseHtml.convert_lxml_element_to_string(elem))
