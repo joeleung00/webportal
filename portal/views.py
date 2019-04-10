@@ -6,6 +6,8 @@ from django.shortcuts import redirect
 from .crawlpage import crawlpage
 from .tasks import process_grep_requests
 
+
+
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
     for category in categories:
@@ -112,3 +114,5 @@ def category(request, pk):
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
+
+
