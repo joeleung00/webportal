@@ -73,6 +73,13 @@ def home(request):
             } for category in categories
         ]
 
+        # delete cate in the home page
+        if request.method == "POST":
+            print (request.POST)
+        if "deleteCate" in request.POST:
+            cate_id = request.POST["deleteCate"]
+            categories.get(cate_id).delete()
+
     return render(request, 'portal/home.html', content)
 
 def about(request):
@@ -95,9 +102,8 @@ def category(request, pk):
             Message.objects.get(pk=message_id).delete()
 
         if "Delete_multi_msg" in request.POST:
-            messages_list = request.POST.getlist['Delete_multi_msg']
+            messages_list = request.POST.getlist('selectedMessage[]')
             for message_id in messages_list:
-                print ("message_id: ", message_id)
                 Message.objects.get(pk=message_id).delete()
 
 
