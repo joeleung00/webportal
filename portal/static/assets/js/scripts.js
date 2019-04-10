@@ -23,12 +23,12 @@ function selectMessages()
     for(var i=0; i<checkbox.length; i++) {
       if (checkbox[i].style.display === "none") {
         checkbox[i].style.display = "block";
-        selectMessageButton.className = "btn btn-secordary btn-min-width";
-        deleteSelectMessageButton.className = "btn btn-danger btn-min-width";
+        selectMessageButton.className = "btn btn-secordary btn-block";
+        deleteSelectMessageButton.style.display = "block";
       } else {
         checkbox[i].style.display = "none";
-        selectMessageButton.className = "btn btn-success btn-min-width";
-        deleteSelectMessageButton.className = "btn btn-secordary btn-min-width";
+        selectMessageButton.className = "btn btn-success btn-block";
+        deleteSelectMessageButton.style.display = "none";
       }
     }
 }

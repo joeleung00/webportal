@@ -13,11 +13,18 @@
     <br>
     <form method="post">
         {% csrf_token %}
-    <input type="hidden" name="Delete_cate" value="{{ category.id }}">
-    <input type="button" value="Delete Message" class="btn btn-secordary btn-min-width" data-toggle="modal" data-target="#confirm-submit-multi" id="delete_select_message_button">
-    <input type="button" value="Select" class="btn btn-success btn-min-width" data-toggle="modal" data-target="#" onclick="selectMessages()" id="select_message_button">
-    <input type="button" value="Delete Category" class="btn btn-danger btn-min-width" data-toggle="modal" data-target="#confirm-submit-cate{{ category.id }}">
-    </form>
+      <input type="hidden" name="Delete_cate" value="{{ category.id }}">
+      <div class="content-header-right col-md-12 col-12">
+        <div class="breadcrumbs-top float-md-right">
+          <div class="text-center">
+      <input type="button" value="Delete Category" class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirm-submit-cate{{ category.id }}">
+      <input type="button" value="Select" class="btn btn-success btn-block" data-toggle="modal" data-target="#" onclick="selectMessages()" id="select_message_button">
+      <input type="button" value="Delete Message" class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirm-submit-multi" id="delete_select_message_button" style="display: none">
+    </br>
+          </div>
+        </div>
+      </div>
+      </form>
 {% endblock %}
 
 <!-- Need category data for list item of Left menu in base.html -->

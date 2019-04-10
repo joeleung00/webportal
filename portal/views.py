@@ -80,7 +80,8 @@ def home(request):
             print (request.POST)
         if "deleteCate" in request.POST:
             cate_id = request.POST["deleteCate"]
-            categories.get(cate_id).delete()
+            print(cate_id)
+            Category.objects.get(pk = cate_id).delete()
 
     return render(request, 'portal/home.html', content)
 
@@ -114,5 +115,3 @@ def category(request, pk):
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
-
-
