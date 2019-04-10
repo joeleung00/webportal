@@ -1,4 +1,4 @@
-<!-- {% block content %}
+<!--
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
@@ -16,7 +16,7 @@
             </small>
         </div>
     </div>
-{% endblock content %} -->
+ -->
 
 
 <!-- merge with html & css -->
@@ -58,15 +58,16 @@
     <!-- BEGIN Custom CSS-->
     <!-- END Custom CSS-->
   </head>
-  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-color="bg-gradient-x-purple-blue" data-col="2-columns">
+  <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns" style="background: url({% static 'theme-assets/images/backgrounds/main_bg1.jpg' %}); background-size: cover"> <!-- data-color="bg-gradient-x-purple-blue" -->
 
     <!-- ==============TOP MENU============== -->
-    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light">
+    <!-- Navigation Bar -->
+    <nav class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-light navbar-left" style="background-color: #2c303b"> <!--   -->
       <div class="navbar-wrapper">
         <div class="navbar-container content">
           <div class="collapse navbar-collapse show" id="navbar-mobile">
             <ul class="nav navbar-nav mr-auto float-left">
-              <li class="nav-item d-block d-md-none"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+              <li class="nav-item d-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
 
 
             </ul>
@@ -84,7 +85,7 @@
     <!-- ////////////////////////////////////////////////////////////////////////////-->
    <!-- LEFT MENU -->
 
-   <div class="main-menu menu-fixed menu-light menu-accordion    menu-shadow " data-scroll-to-active="true" data-img='https://source.unsplash.com/twukN12EN7c/1920x1080'>
+   <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow " data-scroll-to-active="true" style="background: url({% static 'theme-assets/images/backgrounds/main_bg2.png' %})">
     <div class="navbar-header">
       <ul class="nav navbar-nav flex-row">
         <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'portal-home' %}"><img class="brand-logo" alt="Chameleon admin logo" src="{% static 'theme-assets/images/logo/logo.png' %}"/>
@@ -124,6 +125,7 @@
       <div class="content-header row">
         <div class="content-header-left col-md-4 col-12 mb-2">
           <!-- Main page title -->
+          <br>
           <h3 class="content-header-title">Login Page</h3>
         </div>
         <div class="content-header-right col-md-8 col-12">
@@ -149,7 +151,7 @@
 <div class="row match-height">
   <!-- Login box -->
   <div class="col-xl-4 col-lg-6 col-md-12  mx-auto"> <!-- mx-auto for center the box -->
-          <div class="card">
+          <div class="card" style="opacity: 0.9;">
               <div class="card-header">
                   <!-- title for the box -->
                   <legend class="border-bottom mb-4">Log In</legend>
@@ -184,7 +186,7 @@
 
   <!-- FOOTER -->
 
-  <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+  <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
         <li class="list-inline-item"><a class="my-1" href="" target="_blank"> Help</a></li>

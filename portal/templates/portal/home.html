@@ -48,7 +48,7 @@
         <div class="navbar-container content">
           <div class="collapse navbar-collapse show" id="navbar-mobile">
             <ul class="nav navbar-nav mr-auto float-left">
-              <li class="nav-item d-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
+              <li class="nav-item d-none d-block"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu"></i></a></li>
             </ul>
 
             <ul class="nav navbar-nav float-right">
@@ -193,14 +193,14 @@
                     <!-- new website button -->
                     {% if user.is_authenticated %}
                     <br>
-                    <a href="" id="new-website" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalSearchForm">
+                    <a href="" id="new-website" class="btn btn-success btn-block" data-toggle="modal" data-target="#modalSearchForm">
                       Add New Website
                     </a>
                     {% endif %}
 
                     <!-- connect to Google Calendar button -->
                     {% if user.is_authenticated %}
-                    <a href="calendar/" class="btn btn-primary btn-block" >
+                    <a href="calendar/" class="btn btn-warning btn-block" >
                       Connect to Google Calendar
                     </a>
                     {% endif %}
@@ -384,7 +384,7 @@ aria-hidden="true">
 
   <!-- FOOTER -->
 
-  <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+  <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
         <li class="list-inline-item"><a class="my-1" href="" target="_blank"> Help</a></li>

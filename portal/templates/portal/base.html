@@ -112,12 +112,14 @@
       <div></div>
       {% endblock %}
 
+      {% block add_category_btn %}
       <!-- new category button -->
       {% if user.is_authenticated %}
       <a href="" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
         Add new Category
       </a>
       {% endif %}
+      {% endblock %}
     </div>
     <div class="navigation-background"></div>
   </div>
@@ -170,7 +172,7 @@
 
   <!-- FOOTER -->
 
-  <footer class="footer footer-static footer-light navbar-border navbar-shadow">
+  <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
         <li class="list-inline-item"><a class="my-1" href="" target="_blank"> Help</a></li>
