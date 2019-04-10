@@ -19,9 +19,13 @@ class Message(models.Model):
     content = models.TextField()
     #date_posted = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ['-modified_date']
 
 class GrepRequest(models.Model):
     content_title = models.CharField(max_length=100)
