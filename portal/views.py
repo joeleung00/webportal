@@ -20,13 +20,9 @@ def fix_full_url(url):
     else:
         return url
 
-def check_no_repeat_name(request, categories):
-    new_category_title = request.POST['new_cate_title']
-    for category in categories:
-        if (new_category_title == category.title):
-            return False
-    return True
-
+from .check_err import check_no_repeat_name
+from .check_err import check_input_error
+from .ordering import reasign_order
 
 def home(request):
     content = {}
@@ -38,24 +34,23 @@ def home(request):
 
         content = {
             'category_blocks': None,
-            'error': False
         }
-
         if "new_cate_title" in request.POST:
+            if request.POST['new_cate_title'] != '':
+                if (check_no_repeat_name(request, categories)):
+                    new_category = Category()
+                    new_category.title = request.POST['new_cate_title']
+                    new_category.author = request.user
+                    new_category.position = len(categories) + 1
+                    new_category.save()
+                    #add more so categories have been changed
+                    categories = Category.objects.filter(author=request.user)
 
-            if (check_no_repeat_name(request, categories)):
-                new_category = Category()
-                new_category.title = request.POST['new_cate_title']
-                new_category.author = request.user
-                new_category.save()
-                messages.success(request, new_category.title + ' is added as a new category.')
-                #add more so categories have been changed
-                categories = Category.objects.filter(author=request.user)
-
+                else:
+                    # raise the error message, the category name is repeated.
+                    return HttpResponse("error")
             else:
-                # raise the error message, the category name is repeated.
-                messages.warning(request, 'The category is already existed.')
-                pass
+                return HttpResponse("error")
 
 
         # dealing with grep request
@@ -64,24 +59,35 @@ def home(request):
             msg_title = request.POST["message_title"]
             crawltag = request.POST["crawltag"]
             category_id = request.POST["category_dropdown"]
-            #  checkvalid()...
-            element = crawlpage(url, crawltag)
+            add_to_calendar = request.POST["add_to_calendar"]
 
-            # save message
-            new_msg = Message()
-            new_msg.title = msg_title
-            new_msg.category = categories.get(pk = category_id)
-            new_msg.content = element
-            new_msg.full_url = url
-            new_msg.save()
+            #  checkvalid()..
+            error = check_input_error(url, msg_title, crawltag, add_to_calendar, request.user)
+            if ( error == 100):
+                element = crawlpage(url, crawltag)
+                if element[0:5] == "Error":
+                    return HttpResponse(3)
+                # save message
+                new_msg = Message()
+                new_msg.title = msg_title
+                new_msg.category = categories.get(pk = category_id)
+                new_msg.content = element
+                new_msg.save()
 
-            # save grep request
-            new_grep = GrepRequest()
-            new_grep.content_title = msg_title
-            new_grep.crawltag = crawltag
-            new_grep.url = url
-            new_grep.message = new_msg
-            new_grep.save()
+                # save grep request
+                new_grep = GrepRequest()
+                new_grep.content_title = msg_title
+                new_grep.crawltag = crawltag
+                if (add_to_calendar == '1'):
+                    new_grep.add_to_calendar = True
+                else:
+                    new_grep.add_to_calendar = False
+                new_grep.url = url
+                new_grep.message = new_msg
+                new_grep.save()
+            else:
+                return HttpResponse(error)
+
 
 
         content["category_blocks"] = [
@@ -92,8 +98,6 @@ def home(request):
         ]
 
         # delete cate in the home page
-        if request.method == "POST":
-            print (request.POST)
         if "deleteCate" in request.POST:
             cate_id = request.POST["deleteCate"]
             print(cate_id)
@@ -102,9 +106,14 @@ def home(request):
 
     return render(request, 'portal/home.html', content)
 
+
+
 def about(request):
-    process_grep_requests()
     return render(request, 'portal/about.html')
+
+def reload_function(request):
+    process_grep_requests()
+    return redirect("portal-home")
 
 
 def category(request, pk):
@@ -116,6 +125,8 @@ def category(request, pk):
         if "Delete_cate" in request.POST:
 
             category.delete()
+            categories = Category.objects.filter(author=request.user)
+            reasign_order(categories)
             return redirect('portal-home')
 
         if "Delete_msg" in request.POST:
@@ -129,6 +140,7 @@ def category(request, pk):
 
 
     content = {
+        'all_categories': Category.objects.filter(author=request.user),
         'category' : category,
         'messages': messages
     }

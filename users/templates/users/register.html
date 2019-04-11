@@ -1,24 +1,14 @@
-<!-- {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
-                {{ form }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="#">Sign In</a>
-            </small>
-        </div>
-    </div>
-{% endblock content %} -->
 
 <!-- merge -->
+
+<!--
+Reference:
+  The Layout is modified from the Chameleon Admin Template from https://themeselection.com/
+  Template icons ref: https://github.com/colebemis/feather
+  Template images ref: https://unsplash.com/
+  background image 1 ref: https://www.pinterest.com/pin/643311128002050940/
+  background image 2 ref: https://www.videoblocks.com/video/dark-background-with-triangle-pattern-rncyqmozwj38if4yg
+-->
 
 <!DOCTYPE html>
 
@@ -30,10 +20,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="Chameleon Admin is a modern Bootstrap 4 webapp &amp; admin dashboard html template with a large number of components, elegant design, clean and organized code.">
-    <meta name="keywords" content="admin template, Chameleon admin template, dashboard template, gradient admin template, responsive admin template, webapp, eCommerce dashboard, analytic dashboard">
-    <meta name="author" content="ThemeSelect">
-    <!-- Dashboard - Chameleon Admin - Modern Bootstrap 4 WebApp & Dashboard HTML Template + UI Kit-->
+    <meta name="description" content="CSCI 3100 Project Home Page">
+    <meta name="author" content="Group 17">
+    <meta name="keywords" content="dashboard, CSCI3100, Project">
+
     <title>Web Portal</title>
     <link rel="apple-touch-icon" href="{% static 'theme-assets/images/ico/apple-icon-120.png' %">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'theme-assets/images/ico/favicon.ico' %}">
@@ -43,9 +33,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/vendors.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/vendors/css/charts/chartist.css' %}">
     <!-- END VENDOR CSS-->
-    <!-- BEGIN CHAMELEON  CSS-->
+    <!-- BEGIN Chameleon Template  CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/app-lite.css' %}">
-    <!-- END CHAMELEON  CSS-->
+    <!-- END Chameleon Template  CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/menu/menu-types/vertical-menu.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/colors/palette-gradient.css' %}">
@@ -84,9 +74,9 @@
    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow " data-scroll-to-active="true" style="background: url({% static 'theme-assets/images/backgrounds/main_bg2.png' %})">
     <div class="navbar-header">
       <ul class="nav navbar-nav flex-row">
-        <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'portal-home' %}"><img class="brand-logo" alt="Chameleon admin logo" src="{% static 'theme-assets/images/logo/logo.png' %}"/>
+        <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'portal-home' %}"><img class="brand-logo" alt="logo" src="{% static 'theme-assets/images/logo/logo.png' %}"/>
             <!-- Menu title -->
-            <h3 class="brand-text">CSCI 3100</h3></a></li>
+            <h3 class="brand-text">Web Portal</h3></a></li>
         <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
       </ul>
     </div>
@@ -155,7 +145,7 @@
                         </form>
                         <div class="border-top pt-3">
                             <small class="text-muted">
-                                Already Have An Account? <a class="ml-2" href="#">Sign In</a>
+                                Already Have An Account? <a class="ml-2" href="/login/">Sign In</a>
                             </small>
                         </div>
                     </div>
@@ -210,7 +200,7 @@ aria-hidden="true">
   <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-        <li class="list-inline-item"><a class="my-1" href="" target="_blank"> Help</a></li>
+
         </ul>
 
     <!-- "About" link -->
@@ -229,10 +219,10 @@ aria-hidden="true">
     <!-- BEGIN PAGE VENDOR JS-->
     <script src="{% static 'theme-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN CHAMELEON  JS-->
+    <!-- BEGIN Chameleon Template  JS-->
     <script src="{% static 'theme-assets/js/core/app-menu-lite.js' %}" type="text/javascript"></script>
     <script src="{% static 'theme-assets/js/core/app-lite.js' %}" type="text/javascript"></script>
-    <!-- END CHAMELEON  JS-->
+    <!-- END Chameleon Template  JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->

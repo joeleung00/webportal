@@ -32,10 +32,16 @@
 {% block left_menu %}
 <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
   <li class=" nav-item"><a href="{% url 'portal-home' %}"><i class="ft-home"></i>Dashboard</a>
-  </li>
+<!--  </li>
   <li class=" nav-item">
   <a href="{% url 'portal-category' category.id  %}" id="currentURL" style="display: none">{% url 'portal-category' category.id  %}</a>
   </li>
+-->
+  {% for category in all_categories %}
+      <li class=" nav-item">
+      <a href="{% url 'portal-category' category.id  %}"><i class="ft-layers"></i><span class=title>{{ category.title }}</span></a>
+      </li>
+  {% endfor %}
 
   <!-- list item for the category -->
   {% for category in categories %}
@@ -76,17 +82,12 @@
               <div class="card-content collapse show">
                   <div class="card-body">
 
-                      <!-- Origin version message -->
+                      <!-- Origin message -->
 
                           <p> {{ message.content }} </p>
                           <form method="post">
                               {% csrf_token %}
                           <input type="hidden" name="Delete_msg" value= {{ message.id }}>
-                          <!--
-                          === origin ===
-                          <input type="button" value="Delete" class="btn btn-danger mr-1 mb-1 btn-sm" data-toggle="modal" data-target="#confirm-submit{{ message.id }}">
-                          -->
-
                           <!-- open the submit_form by "data-target" -->
                           </form>
 
@@ -121,12 +122,12 @@
                   {% csrf_token %}
                   <input type="hidden" name="Delete_cate" value= {{ category.id }}>
                   <div class="modal-header">
-                      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Category</h4>
+                      <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete Category</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <div class="modal-body">
+                  <div class="modal-body warning-msg">
                       Are you sure you want to delete?
                   </div>
 
@@ -147,12 +148,12 @@
                   {% csrf_token %}
                   <input type="hidden" name="Delete_cate" value= {{ category.id }}>
                   <div class="modal-header">
-                      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Selected Message</h4>
+                      <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete Selected Message</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <div class="modal-body">
+                  <div class="modal-body warning-msg">
                       Are you sure you want to delete?
                   </div>
 
@@ -175,12 +176,12 @@
                     {% csrf_token %}
                     <input type="hidden" name="Delete_msg" value= {{ message.id }}>
                     <div class="modal-header">
-                        <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete</h4>
+                        <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body warning-msg">
                         Are you sure you want to delete?
                     </div>
 
