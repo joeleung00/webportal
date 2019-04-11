@@ -7,3 +7,6 @@ db.sqlite3
 
 #mac os generated file
 .DS_Store
+
+#google calendar tocken
+token.pickle

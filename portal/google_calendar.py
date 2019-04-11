@@ -21,23 +21,26 @@ def google_calendar_connection():
     # time.
 
     # Comment below three rows of code to require user to authorize everytime
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
+    try:
+        if os.path.exists('token.pickle'):
+            with open('token.pickle', 'rb') as token:
+                creds = pickle.load(token)
 
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'client_secret.json', SCOPES)
-            creds = flow.run_local_server()
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
+        # If there are no (valid) credentials available, let the user log in.
+        if not creds or not creds.valid:
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+            else:
+                flow = InstalledAppFlow.from_client_secrets_file(
+                    'client_secret.json', SCOPES)
+                creds = flow.run_local_server()
+            # Save the credentials for the next run
+            with open('token.pickle', 'wb') as token:
+                pickle.dump(creds, token)
 
-    service = build('calendar', 'v3', credentials=creds)
+        service = build('calendar', 'v3', credentials=creds)
+    except:
+        return False
 
     return service
 
@@ -56,12 +59,14 @@ def createEvent(Gcal, title, startDate, startTime, endDate, endTime):
 
 def calendar(request):
 
-    profile = Profile.objects.get(user=request.user)
-    profile.google_auth = True
-    profile.save()
     Gcal = google_calendar_connection()
+    if (Gcal != False):
+        profile = Profile.objects.get(user=request.user)
+        profile.google_auth = True
+        profile.save()
+
 
     # example of calling createEvent function
-    createEvent(Gcal, '3100project', '2019-04-08', '18:00:00', '2019-04-08', '20:00:00')
+    #createEvent(Gcal, '3100project', '2019-04-08', '18:00:00', '2019-04-08', '20:00:00')
 
     return redirect('portal-home')
