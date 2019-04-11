@@ -83,8 +83,6 @@ def home(request):
         ]
 
         # delete cate in the home page
-        if request.method == "POST":
-            print (request.POST)
         if "deleteCate" in request.POST:
             cate_id = request.POST["deleteCate"]
             print(cate_id)
