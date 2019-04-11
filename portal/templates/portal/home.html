@@ -169,11 +169,11 @@
       <!-- new category button -->
       {% if user.is_authenticated %}
 
-      <a href="" class="btn btn-info btn-block btn-glow btn-upgrade-pro mx-1 mb-4"  data-toggle="modal" data-target="#reorderCategory">
+      <a href="" class="btn btn-info btn-block btn-upgrade-pro mx-1 mb-4"  data-toggle="modal" data-target="#reorderCategory">
         Reorder Category
       </a>
 
-      <a href="" id="new-category" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
+      <a href="" id="new-category" class="btn btn-primary btn-block btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
         Add new Category
       </a>
       {% endif %}
@@ -320,14 +320,12 @@ aria-hidden="true">
       </button>
     </div>
 
-
-
     <div class="modal-body mx-3">
       <div class="md-form mb-5">
         <i class="fas fa-envelope prefix grey-text"></i>
-        <ul id="columns">
+        <ul id="columns" class="reorder_cate_list">
           {% for block in category_blocks %}
-          <li class="column" draggable="true" id={{ block.category.id }}><header><font size='4'>{{ block.category.title }}</font></header></li>
+          <li class="column" draggable="true" id={{ block.category.id }}><header class="cate_list_item"><font size='4'>{{ block.category.title }}</font></header></li>
           {% endfor %}
         </ul>
       </div>
