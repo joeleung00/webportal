@@ -38,6 +38,8 @@
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
     <!-- END Custom CSS-->
+
+
   </head>
   <body class="vertical-layout vertical-menu 2-columns fixed-navbar" data-open="click" data-menu="vertical-menu" data-col="2-columns" style="background: url({% static 'theme-assets/images/backgrounds/main_bg1.jpg' %}); background-size: cover"> <!-- data-color="bg-gradient-x-purple-blue" -->
 
@@ -86,6 +88,7 @@
       <!-- menu content -->
       <ul class="navigation navigation-main connectedSortable" id="main-menu-navigation" data-menu="menu-navigation">
         <li class="active"><a href=""><i class="ft-home"></i><span class="menu-title" data-i18n="">Dashboard</span></a>
+
         </li>
 
         <!-- list item for the category -->
@@ -184,6 +187,8 @@
           <br>
           <h3 class="content-header-title">Home</h3>
         </div>
+
+
         <div class="content-header-right col-md-8 col-12">
           <div class="breadcrumbs-top float-md-right">
             <div class="text-center">
@@ -271,22 +276,24 @@ aria-hidden="true">
     </div>
 
 
-    <form method="post">
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <i class="fas fa-envelope prefix grey-text"></i>
-            {% csrf_token %}
-            <input type="text" id="cate_title" class="form-control validate" name="new_cate_title">
-            <label data-error="wrong" data-success="right" for="form3">Category Title</label>
-            {% if error %}
-                <label data-error="wrong" data-success="right" for="form3">Same name</label>
-            {% endif %}
-        </div>
+
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+
+    <form id="add_category_form">
+        {% csrf_token %}
+        <input type="text" id="new_cate_title" class="form-control validate" name="new_cate_title">
+        <label data-error="wrong" data-success="right" for="form3">Category Title</label>
+        <div>
+        <span id="category_error_msg" style="color:red;" ></span>
       </div>
 
-      <div class="modal-footer d-flex justify-content-center">
-       <input type="submit" class="btn btn-primary btn-block" onclick="addNewCategory()" value="Add">
       </div>
+
+    <div class="modal-footer d-flex justify-content-center">
+     <input type="submit" class="btn btn-primary btn-block"  value="Add">
+    </div>
     </form>
 
 
@@ -294,9 +301,43 @@ aria-hidden="true">
   </div>
 </div>
 </div>
+</div>
+
+<!-- Reorder Category Form -->
+<div class="modal fade" id="reorderCategory" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Reorder Category</h4>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+
+
+    <div class="modal-body mx-3">
+      <div class="md-form mb-5">
+        <i class="fas fa-envelope prefix grey-text"></i>
+        <ul id="columns">
+          {% for block in category_blocks %}
+          <li class="column" draggable="true" id={{ block.category.id }}><header>{{ block.category.title }}</header></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal-footer d-flex justify-content-center">
+     <input type="submit" class="btn btn-primary btn-block"  value="Reorder" onclick="returnOrder();">
+    </div>
+
+  </div>
+</div>
+</div>
 
 <!-- Add Website Form -->
-<form  method="post" autocomplete="off" >
+<form  method="post" autocomplete="off" id="add_website_form">
     {% csrf_token %}
 <div class="modal fade" id="modalSearchForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 aria-hidden="true">
@@ -315,27 +356,44 @@ aria-hidden="true">
           <i class="fas fa-envelope prefix grey-text"></i>
           <input type="text" id="message_title" class="form-control validate" name="message_title">
           <label data-error="wrong" data-success="right" for="form3">Message Title</label>
+          <div>
+              <span id="msg_title_error_msg" style="color:red;" ></span>
+          </div>
         </div>
 
         <div class="md-form mb-5">
             <label data-error="wrong" data-success="right" for="form3">Category</label>
-            <select name="category_dropdown">
+            <select name="category_dropdown" id="category_dropdown">
                 {% for block in category_blocks %}
                     <option value = "{{ block.category.id }}" > {{block.category.title}} </option>
                 {% endfor %}
             </select>
         </div>
 
+        <div class="md-form mb-5">
+            <label data-error="wrong" data-success="right" for="form3">Add To Calendar</label>
+            <input style="margin:10px" type="checkbox" id="add_to_calendar" value="Yes">
+            <div>
+                <span id="add_to_calendar_err_msg" style="color:red;" ></span>
+            </div>
+        </div>
+
       <div class="md-form mb-5">
         <i class="fas fa-envelope prefix grey-text"></i>
         <input type="text" id="crawllink" class="form-control validate" name="crawllink">
         <label data-error="wrong" data-success="right" for="form3">Website URL</label>
+        <div>
+            <span id="url_error_msg" style="color:red;" ></span>
+        </div>
       </div>
 
       <div class="md-form mb-5">
         <i class="fas fa-envelope prefix grey-text"></i>
         <input type="text" id="crawltag" class="form-control validate" name="crawltag">
         <label data-error="wrong" data-success="right" for="form3">CSS Selector</label>
+        <div>
+            <span id="css_selector_error_msg" style="color:red;" ></span>
+        </div>
       </div>
 
     </div>
@@ -389,7 +447,7 @@ aria-hidden="true">
   <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-        <li class="list-inline-item"><a class="my-1" href="" target="_blank"> Help</a></li>
+        <li class="list-inline-item"><a href=""  data-toggle="modal" data-target="#reorderCategory"> Reorder Category</a></li>
         </ul>
 
     <!-- "About" link -->
@@ -403,8 +461,11 @@ aria-hidden="true">
 
 
 
-
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src = "{% static 'assets/js/add_cate.js' %}"> </script>
+  <script type="text/javascript" src = "{% static 'assets/js/add_web.js' %}"> </script>
+  <script type="text/javascript" src = "{% static 'assets/js/sort_category.js' %}"> </script>
+  <script type="text/javascript" src = "{% static 'assets/js/return_order.js' %}"> </script>
 
     <!-- BEGIN VENDOR JS-->
     <script src="{% static 'theme-assets/vendors/js/vendors.min.js' %}" type="text/javascript"></script>
