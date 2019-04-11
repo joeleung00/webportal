@@ -15,10 +15,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="CSCI 3100 Project Home Page">
-    <meta name="keywords" content="dashboard, CSCI3100, Project">
     <meta name="author" content="Group 17">
+    <meta name="keywords" content="dashboard, CSCI3100, Project">
     {% block page_title %}
-    <title>Dashboard</title>
+    <title>Web Portal</title>
     {% endblock %}
     <link rel="apple-touch-icon" href="{% static 'theme-assets/images/ico/apple-icon-120.png' %">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'theme-assets/images/ico/favicon.ico' %}">
@@ -28,9 +28,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/vendors.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/vendors/css/charts/chartist.css' %}">
     <!-- END VENDOR CSS-->
-    <!-- BEGIN CHAMELEON  CSS-->
+    <!-- BEGIN Chameleon Template  CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/app-lite.css' %}">
-    <!-- END CHAMELEON  CSS-->
+    <!-- END Chameleon Template  CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/menu/menu-types/vertical-menu.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/colors/palette-gradient.css' %}">
@@ -76,7 +76,7 @@
     <div class="navbar-header">
       <ul class="nav navbar-nav flex-row">
         <!-- change "src" to change logo of left menu -->
-        <li class="nav-item mr-auto"><a class="navbar-brand" href=""><img class="brand-logo" alt="Chameleon admin logo" src="{% static 'theme-assets/images/logo/logo.png' %}"/>
+        <li class="nav-item mr-auto"><a class="navbar-brand" href=""><img class="brand-logo" alt="logo" src="{% static 'theme-assets/images/logo/logo.png' %}"/>
             <!-- Menu title -->
             <h3 class="brand-text">Web Portal</h3></a></li>
         <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
@@ -107,7 +107,7 @@
       {% endblock %}
 
       <!-- Submit Form for Delete Category message -->
-      <!-- !!!! Put those form here to avoid covering the form !!!! -->
+      <!-- Put those form here to avoid covering the form -->
       {% block submit_form %}
       <div></div>
       {% endblock %}
@@ -161,7 +161,6 @@
 <!-- MAIN Content -->
 {% block content %}
 {% endblock %}
-<!-- ===========FORM============ -->
 
 
 
@@ -176,10 +175,7 @@
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
 
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-
         </ul>
-
-
     <!-- "About" link -->
     <div>
     <a href="{% url  'portal-about' %}"> about </a>
@@ -199,10 +195,10 @@
   <!-- BEGIN PAGE VENDOR JS-->
   <script src="{% static 'theme-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
   <!-- END PAGE VENDOR JS-->
-  <!-- BEGIN CHAMELEON  JS-->
+  <!-- BEGIN Chameleon Template  JS-->
   <script src="{% static 'theme-assets/js/core/app-menu-lite.js' %}" type="text/javascript"></script>
   <script src="{% static 'theme-assets/js/core/app-lite.js' %}" type="text/javascript"></script>
-  <!-- END CHAMELEON  JS-->
+  <!-- END Chameleon Template  JS-->
   <!-- BEGIN PAGE LEVEL JS-->
   <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
   <!-- END PAGE LEVEL JS-->
