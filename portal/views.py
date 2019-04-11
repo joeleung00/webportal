@@ -83,6 +83,7 @@ def home(request):
             print(cate_id)
             Category.objects.get(pk = cate_id).delete()
 
+
     return render(request, 'portal/home.html', content)
 
 def about(request):

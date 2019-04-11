@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Category, Message, GrepRequest
+from django.shortcuts import redirect
+from users.models import Profile
 
 import datetime
 import pickle
@@ -36,11 +38,11 @@ def google_calendar_connection():
             pickle.dump(creds, token)
 
     service = build('calendar', 'v3', credentials=creds)
-    
+
     return service
 
 def createEvent(Gcal, title, startDate, startTime, endDate, endTime):
-    
+
     # HK timezone
     GMT_OFF = '+08:00'
 
@@ -53,25 +55,13 @@ def createEvent(Gcal, title, startDate, startTime, endDate, endTime):
     e = Gcal.events().insert(calendarId='primary',sendNotifications=True, body=EVENT).execute()
 
 def calendar(request):
-    content = {}
-    
+
+    profile = Profile.objects.get(user=request.user)
+    profile.google_auth = True
+    profile.save()
     Gcal = google_calendar_connection()
 
     # example of calling createEvent function
     createEvent(Gcal, '3100project', '2019-04-08', '18:00:00', '2019-04-08', '20:00:00')
 
-    categories = Category.objects.filter(author=request.user)
-    
-    content = {
-            'category_blocks': None,
-            'error': False
-        }
-
-    content["category_blocks"] = [
-            {
-                'category': category,
-                'messages': Message.objects.filter(category=category),
-            } for category in categories
-        ]
-
-    return render(request, 'portal/home.html', content)
+    return redirect('portal-home')

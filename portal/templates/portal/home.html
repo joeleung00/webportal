@@ -200,9 +200,11 @@
 
                     <!-- connect to Google Calendar button -->
                     {% if user.is_authenticated %}
-                    <a href="calendar/" class="btn btn-warning btn-block" >
+                      {% if not user.profile.google_auth %}
+                      <a href="calendar/" class="btn btn-warning btn-block" >
                       Connect to Google Calendar
-                    </a>
+                      </a>
+                      {% endif %}
                     {% endif %}
                   </br>
                   </div>
