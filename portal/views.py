@@ -7,8 +7,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from .models import Category, Message, GrepRequest
-from .crawlpage import crawlpage
-from .tasks import process_grep_requests
+from .crawlpage import crawlpage, process_grep_requests
 
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
@@ -58,14 +57,13 @@ def home(request):
             new_msg = Message()
             new_msg.title = msg_title
             new_msg.category = categories.get(pk = category_id)
-            new_msg.content = ".."
+            new_msg.content = element
             new_msg.save()
 
             # save grep request
             new_grep = GrepRequest()
             new_grep.content_title = msg_title
             new_grep.crawltag = crawltag
-            new_grep.selected_content = element
             new_grep.url = url
             new_grep.message = new_msg
             new_grep.save()

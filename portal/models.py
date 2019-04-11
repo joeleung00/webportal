@@ -21,7 +21,6 @@ class Message(models.Model):
 
 class GrepRequest(models.Model):
     content_title = models.CharField(max_length=100)
-    selected_content = models.TextField()
     crawltag = models.TextField(default='test')
     #selector_type = models.CharField(max_length=5)
     url = models.CharField(max_length=500)
