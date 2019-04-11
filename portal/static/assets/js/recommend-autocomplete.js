@@ -2,11 +2,12 @@
 
 // TODO: release the resources when autocomplete is not needed to avoid memory leak
 
-var course_identifiers = ["CENG2010","CENG2400","ESTR2100","CENG3150","CENG3410","CENG3420","CENG3430","ESTR3100","CENG3470","CENG3490","CENG4100","CENG4120","CENG4480","CENG4998","CENG4999","CENG5030","CENG5050","CENG5270","CENG5271","CENG5410","ENGG5101","CENG5420","CENG5440","CENG5430","CSCI1020","CSCI1030","CSCI1040","CSCI1050","CSCI1110","CSCI1120","ESTR1100","CSCI1130","ESTR1102","CSCI1140","CSCI1510","CSCI1520","CSCI1530","CSCI1540","CSCI1580","CSCI2100","ESTR2102","CSCI2110","CSCI2120","CSCI2510","CSCI2520","CSCI2720","CSCI2800","CSCI3100","CSCI3120","CSCI3130","CSCI3150","ESTR3102","CSCI3160","ESTR3104","CSCI3170","CSCI3180","ESTR3106","CSCI3190","CSCI3220","CSCI3230","ESTR3108","CSCI3250","CSCI3251","CSCI3260","CSCI3270","CSCI3280","CSCI3290","CSCI3310","CSCI3320","CSCI3420","CSCI4120","CSCI4140","CSCI4160","CSCI4180","ESTR4106","CSCI4190","CSCI4210","CSCI4220","CSCI4230","CSCI4430","ESTR4120","CSCI4998","CSCI4999","CSCI5010","CSCI5020","CSCI5030","CSCI5050","CSCI5060","CSCI5070","CSCI5080","CSCI5120","CSCI5150","CSCI5160","ENGG5102","CSCI5170","CSCI5180","ENGG5103","CSCI5210","CSCI5240","CSCI5250","ENGG5106","CSCI5280","ENGG5104","CSCI5320","CSCI5350","CSCI5370","CSCI5390","CSCI5430","CSCI5440","CSCI5450","CSCI5460","ENGG5105","CSCI5470","CSCI5510","ENGG5108","CSCI5530","CSCI5520","CSCI5550","CSCI5560","CSCI5570","CSCI5580","CSCI5590","CSCI5600","ENGG1310","ESTR1003","ENGG1410","ESTR1004","ENGG1820","ENGG2020","ESTR2104","ENGG2420","ESTR2000","ENGG2430","ESTR2002","ENGG2440","ESTR2004","ENGG3802","ENGG3803","ENGG4030","ESTR4300","IERG4300","ENGG5781"];
+var category_names =
+["Entertainment", "Flights", "Games", "Map", "Mathematics", "Maths", "Media", "Miscs", "Movies", "News", "School", "Science", "Study", "Weather"];
 
-var autocomplete_invoked = {'message_title': false, 'cate_title': true};
+var autocomplete_invoked = {'message_title': false, 'cate_title': false};
 
-function autocomplete(inp, arr) {
+function autocomplete(inp) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
   var currentFocus;
@@ -24,13 +25,15 @@ function autocomplete(inp, arr) {
       /*append the DIV element as a child of the autocomplete container:*/
       this.parentNode.appendChild(a);
 
-      $.ajax({
+      target_field = inp.id;
+      if (target_field === 'message_title')
+      {
+        $.ajax({
           url: '/recommendation/',
           type: 'post',
           dataType: 'json',
           contentType: 'application/json',
           success: function (data) {
-            //alert(data['option']);
             var suggestions = JSON.parse(data['option']);
             var urls = JSON.parse(data['url']);
             var crawltags = JSON.parse(data['crawltag']);
@@ -63,16 +66,39 @@ function autocomplete(inp, arr) {
               shown++;
             }
           },
-          /*error: function(data){
-             var json = $.parseJSON(data);
-             alert(json.error);
-          },*/
           data: JSON.stringify({"search_string": val})
         }).done(function(res){
           //alert("Success"); // For debug
         }).fail(function(res){
           //alert("Fail"); // For debug
         });
+      } else if (target_field === 'cate_title') {
+        var suggestions = category_names;
+        var shown = 0;
+        /*for each item in the array...*/
+        for (i = 0; (i < suggestions.length) && (shown < 10); i++) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          if (suggestions[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + suggestions[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += suggestions[i].substr(val.length);
+            /*insert a input field that will hold the current suggestionsay item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + suggestions[i] + "' name='" + i + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function(e) {
+                /*insert the value for the autocomplete text field:*/
+                inp.value = this.getElementsByTagName("input")[0].value;
+                var index = this.getElementsByTagName("input")[0].name;
+                /*close the list of autocompleted values,
+                (or any other open lists of autocompleted values:*/
+                closeAllLists();
+            });
+            a.appendChild(b);
+            shown++;
+          }
+        }
+      }
 
   });
   /*execute a function presses a key on the keyboard:*/
