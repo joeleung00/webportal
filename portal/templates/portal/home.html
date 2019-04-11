@@ -276,20 +276,20 @@ aria-hidden="true">
     </div>
 
 
-    <form method="post">
-      <div class="modal-body mx-3">
-        <div class="md-form autocomplete">
-          <i class="fas fa-envelope prefix grey-text"></i>
-            {% csrf_token %}
-            <input type="text" id="cate_title" class="form-control validate" name="new_cate_title">
-            <label data-error="wrong" data-success="right" for="form3">Category Title</label>
-            {% if error %}
-                <label data-error="wrong" data-success="right" for="form3">Same name</label>
-            {% endif %}
-        </div>
-      </div>
+    <div class="modal-body mx-3">
+     <div class="md-form mb-5">
+       <i class="fas fa-envelope prefix grey-text"></i>
 
-      </div>
+   <form id="add_category_form">
+       {% csrf_token %}
+       <input type="text" id="new_cate_title" class="form-control validate" name="new_cate_title">
+       <label data-error="wrong" data-success="right" for="form3">Category Title</label>
+       <div>
+       <span id="category_error_msg" style="color:red;" ></span>
+     </div>
+
+     </div>
+   </div>
 
     <div class="modal-footer d-flex justify-content-center">
      <input type="submit" class="btn btn-primary btn-block"  value="Add">

@@ -12,10 +12,6 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             user = User.objects.get(username=username)
-            profile = Profile()
-            profile.user = user
-            profile.google_auth = False
-            profile.save()
             messages.success(request, f'Account created for {username}!')
             return redirect('portal-home')
     else:
