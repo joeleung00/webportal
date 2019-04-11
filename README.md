@@ -23,6 +23,8 @@ urllib3
 beautifulsoup4
 lxml
 django-crontab
+google-api-python-client
+google-auth-oauthlib
 
 ### Run the demo web crawler py in cmd
 output txt : crawlData.txt
