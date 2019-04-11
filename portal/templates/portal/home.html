@@ -13,10 +13,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="CSCI 3100 Project Home Page">
-    <meta name="keywords" content="dashboard, CSCI3100, Project">
     <meta name="author" content="Group 17">
+    <meta name="keywords" content="dashboard, CSCI3100, Project">
     {% block page_title %}
-    <title>Dashboard</title>
+    <title>Web Portal</title>
     {% endblock %}
     <link rel="apple-touch-icon" href="{% static 'theme-assets/images/ico/apple-icon-120.png' %">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'theme-assets/images/ico/favicon.ico' %}">
@@ -26,9 +26,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/vendors.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/vendors/css/charts/chartist.css' %}">
     <!-- END VENDOR CSS-->
-    <!-- BEGIN CHAMELEON  CSS-->
+    <!-- BEGIN Chameleon Template  CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/app-lite.css' %}">
-    <!-- END CHAMELEON  CSS-->
+    <!-- END Chameleon Template  CSS-->
     <!-- BEGIN Page Level CSS-->
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/menu/menu-types/vertical-menu.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'theme-assets/css/core/colors/palette-gradient.css' %}">
@@ -408,38 +408,6 @@ aria-hidden="true">
 </div>
 </form>
 
-
-<!-- Login in Form -->
-<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header text-center">
-      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Login</h4>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body mx-3">
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="user_name" class="form-control validate">
-        <label data-error="wrong" data-success="right" for="form3">Name</label>
-      </div>
-
-      <div class="md-form mb-5">
-        <i class="fas fa-envelope prefix grey-text"></i>
-        <input type="text" id="user_password" class="form-control validate">
-        <label data-error="wrong" data-success="right" for="form3">Password</label>
-      </div>
-
-    </div>
-    <div class="modal-footer d-flex justify-content-center">
-      <button type="button" class="btn btn-primary btn-block" onclick="addNewCategory()" data-dismiss="modal">Login</button>
-    </div>
-  </div>
-</div>
-</div>
       </div>
     </div>
   </div>
@@ -450,11 +418,9 @@ aria-hidden="true">
   <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-
         </ul>
 
     <!-- "About" link -->
-
     <div>
     <a href="{% url  'portal-about' %}"> about </a>
     </div>
@@ -476,10 +442,10 @@ aria-hidden="true">
     <!-- BEGIN PAGE VENDOR JS-->
     <script src="{% static 'theme-assets/vendors/js/charts/chartist.min.js' %}" type="text/javascript"></script>
     <!-- END PAGE VENDOR JS-->
-    <!-- BEGIN CHAMELEON  JS-->
+    <!-- BEGIN Chameleon Template  JS-->
     <script src="{% static 'theme-assets/js/core/app-menu-lite.js' %}" type="text/javascript"></script>
     <script src="{% static 'theme-assets/js/core/app-lite.js' %}" type="text/javascript"></script>
-    <!-- END CHAMELEON  JS-->
+    <!-- END Chameleon Template  JS-->
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="{% static 'theme-assets/js/scripts/pages/dashboard-lite.js' %}" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->

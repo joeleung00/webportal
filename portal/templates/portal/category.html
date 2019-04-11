@@ -82,17 +82,12 @@
               <div class="card-content collapse show">
                   <div class="card-body">
 
-                      <!-- Origin version message -->
+                      <!-- Origin message -->
 
                           <p> {{ message.content }} </p>
                           <form method="post">
                               {% csrf_token %}
                           <input type="hidden" name="Delete_msg" value= {{ message.id }}>
-                          <!--
-                          === origin ===
-                          <input type="button" value="Delete" class="btn btn-danger mr-1 mb-1 btn-sm" data-toggle="modal" data-target="#confirm-submit{{ message.id }}">
-                          -->
-
                           <!-- open the submit_form by "data-target" -->
                           </form>
 
