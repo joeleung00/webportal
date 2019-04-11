@@ -11,19 +11,19 @@ from . import models as db
 
 def process_oneoff_grep_request(url, xpath_pattern):
 	#
-    # Directly update the target message on trigger
+	# Directly update the target message on trigger
 	#
 
-    # Parse and get target content
-    target_xpath = xpath_pattern
-    target_content = ""
-    multiple = ParseHtml.retrieve_xpath_matches(target_xpath, url)
-    for elem in multiple:
-        target_content += ParseHtml.convert_lxml_element_to_string(elem, truncate=80) + '\n'
-    if target_content == "":
-        target_content = "Target not found, please consider refreshing your request."
+	# Parse and get target content
+	target_xpath = xpath_pattern
+	target_content = ""
+	multiple = ParseHtml.retrieve_xpath_matches(target_xpath, url)
+	for elem in multiple:
+	    target_content += ParseHtml.convert_lxml_element_to_string(elem, truncate=80) + '\n'
+	if target_content == "":
+	    target_content = "Target not found, please consider refreshing your request."
 
-    return target_content
+	return target_content
 
 def process_grep_requests():
 	#
@@ -50,6 +50,7 @@ def crawlpage(url, crawltag):
 
 	except:
 
+		return ''
 		s = sys.exc_info()
 		print("Error '%s' happened on line %d" % (s[1], s[2].tb_lineno))
 

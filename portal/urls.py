@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from . import crawlpage
+from . import google_calendar
 
 urlpatterns = [
     path('category/<int:pk>/', views.category, name='portal-category'),
@@ -8,4 +9,5 @@ urlpatterns = [
     path('about/', views.about, name='portal-about'),
     path('recommendation/', views.recommend, name='portal-recommend'),
     #path("crawl/", crawlpage.crawlpage, name='crawl')
+    path('calendar/', google_calendar.calendar),
 ]

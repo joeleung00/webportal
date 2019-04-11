@@ -171,12 +171,14 @@ class ParseHtml:
             html_elem = etree.HTML(html_str)
             try:
                 matches = html_elem.xpath(xpath_pattern)
+                if isinstance(matches, list):
+                    return matches
             except etree.XPathSyntaxError as e:
                 return ["Error: invalid selector syntax: {}".format(e)]
             except etree.XPathEvalError as e:
                 return ["Error: cannot evaluate selector format: {}".format(e)]
-
-            return matches
+            except Exception as e:
+                print("FATAL: unexpected error. ", e)
         except urllib3.exceptions.BodyNotHttplibCompatible:
             return ["Error: target site cannot be parsed"]
         except urllib3.exceptions.ConnectionError:
@@ -189,7 +191,6 @@ class ParseHtml:
             return ["Error: too many retries"]
         except Exception as e:
             print("FATAL: unexpected error. ", e)
-            raise
         return ["Error: unknown"]
 
 

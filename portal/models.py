@@ -12,9 +12,10 @@ class Category(models.Model):
 class Message(models.Model):
     # This would be used for storing GrepReply
     title = models.CharField(max_length=100)
-    content = models.TextField()
-    #date_posted = models.DateTimeField(default=timezone.now)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    content = models.TextField()
+    full_url = models.CharField(max_length=500, default='')
+    #date_posted = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title

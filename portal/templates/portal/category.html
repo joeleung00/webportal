@@ -1,18 +1,201 @@
-{% block content%}
+{% extends 'portal/base.html' %}
+
+{% block page_title %}
+<title>{{ category.title }}</title>
+{% endblock %}
+
+{% block content_title %}
+    <h3 class="content-header-title">{{ category.title }}</h3>
+
+{% endblock %}
+
+{% block content_title_button %}
+    <br>
     <form method="post">
         {% csrf_token %}
-    <input type="hidden" name="Delete_cate" value= {{ category.id }}>
-    <input type="submit" value="Delete Category">
-    </form>
-    <h1>{{ category.title }}</h1>
-    {% for message in messages %}
-        <h3> {{ message.title }} </h3>
-        <p> {{ message.content }} </p>
-        <form method="post">
-            {% csrf_token %}
-        <input type="hidden" name="Delete_msg" value= {{ message.id }}>
-        <input type="submit" value="Delete">
-        </form>
+      <input type="hidden" name="Delete_cate" value="{{ category.id }}">
+      <div class="content-header-right col-md-12 col-12">
+        <div class="breadcrumbs-top float-md-right">
+          <div class="text-center">
+      <input type="button" value="Delete Category" class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirm-submit-cate{{ category.id }}">
+      <input type="button" value="Select" class="btn btn-success btn-block" data-toggle="modal" data-target="#" onclick="selectMessages()" id="select_message_button">
+      <input type="button" value="Delete Message" class="btn btn-danger btn-block" data-toggle="modal" data-target="#confirm-submit-multi" id="delete_select_message_button" style="display: none">
+    </br>
+          </div>
+        </div>
+      </div>
+      </form>
+{% endblock %}
+
+<!-- Need category data for list item of Left menu in base.html -->
+<!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+{% block left_menu %}
+<ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+  <li class=" nav-item"><a href="{% url 'portal-home' %}"><i class="ft-home"></i>Dashboard</a>
+  </li>
+  <li class=" nav-item">
+  <a href="{% url 'portal-category' category.id  %}" id="currentURL" style="display: none">{% url 'portal-category' category.id  %}</a>
+  </li>
+
+  <!-- list item for the category -->
+  {% for category in categories %}
+      <li class=" nav-item">
+      <a href="{% url 'portal-category' category.id  %}"><i class="ft-layers"></i>{{ category.title }}</a>
+      </li>
+  {% endfor %}
+  <!-- end of list item for the category -->
+</ul>
+{% endblock %}
+
+{% block content%}
+<div class="row match-height">
+  <!-- Card -->
+  {% for message in messages %}
+  <div class="col-xl-4 col-lg-6 col-md-12">
+          <div class="card">
+              <div class="card-header">
+                  <!-- title for the box -->
+                  <h3 class="card-title">{{ message.title }} </h3>
+                  <a class="heading-elements-toggle">
+                      <i class="la la-ellipsis-v font-medium-3"></i>
+                  </a>
+
+                  <!-- button for the box -->
+                  <div class="heading-elements">
+                      <ul class="list-inline mb-0">
+                          <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                          <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                          <li><a data-toggle="modal" data-target="#confirm-submit{{ message.id }}"><i class="ft-x"></i></a></li>
+                      </ul>
+                  </div>
+                  <!-- end of button for the box -->
+
+              </div>
+
+              <!-- content for the box -->
+              <div class="card-content collapse show">
+                  <div class="card-body">
+
+                      <!-- Origin version message -->
+
+                          <p> {{ message.content }} </p>
+                          <form method="post">
+                              {% csrf_token %}
+                          <input type="hidden" name="Delete_msg" value= {{ message.id }}>
+                          <!--
+                          === origin ===
+                          <input type="button" value="Delete" class="btn btn-danger mr-1 mb-1 btn-sm" data-toggle="modal" data-target="#confirm-submit{{ message.id }}">
+                          -->
+
+                          <!-- open the submit_form by "data-target" -->
+                          </form>
+
+                          <!-- select more than one message to delete -->
+                          <!-- select form -->
+                          <form class="was-validated selectMessage"  style="display: none">
+                          <div class="custom-control custom-checkbox mb-3">
+                            <input type="checkbox" class="custom-control-input" value="{{ message.id }}" id="customControlValidation{{ message.id }}" onclick="updateCheckBoxValue({{ message.id }})" required>
+                            <label class="custom-control-label" for="customControlValidation{{ message.id }}">Select this message</label>
+                          </div>
+                          </form>
+
+                      <!-- <a href="{% url 'portal-home' %}"> Home page </a> -->
+
+                      <!-- End of Origin version message -->
+
+                  </div>
+              </div>
+
+          </div>
+    </div>
     {% endfor %}
-    <a href="{% url 'portal-home' %}"> Home page </a>
+</div>
 {% endblock content %}
+
+{% block submit_form %}
+  <!-- Confirm box for delete category -->
+  <div class="modal fade" id="confirm-submit-cate{{ category.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="Delete_cate" value= {{ category.id }}>
+                  <div class="modal-header">
+                      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Category</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      Are you sure you want to delete?
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <!-- submit the form, not yet finish for submitting the delete info. to server -->
+                      <input type="submit" value="Delete" class="btn btn-warning">
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  <!-- Confirm box for delete multi message -->
+  <div class="modal fade" id="confirm-submit-multi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="Delete_cate" value= {{ category.id }}>
+                  <div class="modal-header">
+                      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Selected Message</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      Are you sure you want to delete?
+                  </div>
+
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      <!-- submit the form, not yet finish for submitting the delete info. to server -->
+                      <button type="button" class="btn btn-warning" onclick="deleteSelectedMessage()">Delete</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+
+  {% for message in messages %}
+  <!-- confirmation of delete message -->
+    <div class="modal fade" id="confirm-submit{{ message.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="Delete_msg" value= {{ message.id }}>
+                    <div class="modal-header">
+                        <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete?
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <!-- submit the form, not yet finish for submitting the delete info. to server -->
+                        <input type="submit" value="Delete" class="btn btn-warning">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block add_category_btn %}
+<div></div>
+{% endblock %}

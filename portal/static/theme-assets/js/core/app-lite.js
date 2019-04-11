@@ -46,7 +46,7 @@
         if( $sidebar_img_container.length > 0 && $sidebar_img !== undefined ){
             $sidebar_img_container.css('background-image','url("' + $sidebar_img + '")');
         }
-        
+
         $('.nav-link-search').on('click', function() {
             var $this = $(this),
                 searchInput = $(this).siblings('.search-input');
@@ -57,7 +57,7 @@
                 searchInput.addClass('open');
             }
         });
-        
+
         //Hide navbar search box on close click
         var toogleBtn = $(".header-navbar .navbar-search-close");
         $(toogleBtn).click(function(event) {

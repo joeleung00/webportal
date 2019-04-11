@@ -5,11 +5,33 @@
 {% endblock %}
 
 {% block content_title %}
-    <h1>About Page</h1>
+    <h3 class="content-header-title">About Page</h3>
+{% endblock %}
+
+{% block content_title_button %}
+    <div></div>
 {% endblock %}
 
 {% block content %}
-<div class="row match-height">
-  <div> about content </div>
+<div class="col">
+        <div class="card">
+            <div class="card-header">
+                <!-- title for the box -->
+                <h4 class="card-title" id="heading-about">About Us</h4>
+            </div>
+
+            <!-- content for the box -->
+            <div class="card-content">
+                <div class="card-body">
+                    <p class="card-text"><b>Project Name:</b> Web Protal</p>
+                    <p class="card-text"><b>Course:</b> CSCI 3100</p>
+                    <p class="card-text"><b>Group:</b> 17</p>
+                </div>
+            </div>
+        </div>
 </div>
+{% endblock %}
+
+{% block add_category_btn %}
+<div></div>
 {% endblock %}

@@ -10,6 +10,15 @@ from .models import Category, Message, GrepRequest
 from .crawlpage import crawlpage, process_grep_requests
 from django.contrib import messages #new added for popup message
 
+def fix_full_url(url):
+    #
+    # Try to convert the url to absolute url if it is not starting with XXX://
+    #
+    if '//' not in url:
+        return '//%s' % url
+    else:
+        return url
+
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
     for category in categories:
@@ -50,7 +59,7 @@ def home(request):
 
         # dealing with grep request
         if "crawllink" in request.POST and "message_title" in request.POST and "crawltag" in request.POST:
-            url = request.POST["crawllink"]
+            url = fix_full_url(request.POST["crawllink"])
             msg_title = request.POST["message_title"]
             crawltag = request.POST["crawltag"]
             category_id = request.POST["category_dropdown"]
@@ -62,6 +71,7 @@ def home(request):
             new_msg.title = msg_title
             new_msg.category = categories.get(pk = category_id)
             new_msg.content = element
+            new_msg.full_url = url
             new_msg.save()
 
             # save grep request
@@ -79,6 +89,15 @@ def home(request):
                 'messages': Message.objects.filter(category=category),
             } for category in categories
         ]
+
+        # delete cate in the home page
+        if request.method == "POST":
+            print (request.POST)
+        if "deleteCate" in request.POST:
+            cate_id = request.POST["deleteCate"]
+            print(cate_id)
+            Category.objects.get(pk = cate_id).delete()
+
 
     return render(request, 'portal/home.html', content)
 
@@ -101,6 +120,12 @@ def category(request, pk):
         if "Delete_msg" in request.POST:
             message_id = request.POST["Delete_msg"]
             Message.objects.get(pk=message_id).delete()
+
+        if "Delete_multi_msg" in request.POST:
+            messages_list = request.POST.getlist('selectedMessage[]')
+            for message_id in messages_list:
+                Message.objects.get(pk=message_id).delete()
+
 
     content = {
         'category' : category,
