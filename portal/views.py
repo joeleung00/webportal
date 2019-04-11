@@ -1,5 +1,6 @@
 import json
 
+from django.db import models
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -144,13 +145,34 @@ def recommend(request):
             json_data = json.loads(request.body)
             if 'search_string' in json_data:
                 search_string = json_data['search_string']
+
+                # filtering by keyword
                 grep_requests = GrepRequest.objects.filter(content_title__icontains=search_string)
-                suggestions = [grep_request.content_title for grep_request in grep_requests]
-                urls = [grep_request.url for grep_request in grep_requests]
-                crawltags = [grep_request.crawltag for grep_request in grep_requests]
-                # Generate at most 10 options
-                #suggestions = ["CENG2010","CENG2400","ESTR2100","CENG3150","CENG3410","CENG3420"]
-                #urls = ["a", "b", "c", "d", "e", "f"] # Auto filling URL is not implemented yet
+
+                # TODO: improve the time complexity of this algorithm
+                # deduplication
+                matches = []
+                for grep_request in grep_requests:
+                    print(grep_request.content_title)
+                    for match in matches:
+                        if match.content_title == grep_request.content_title:
+                            if match.url != grep_request.url:
+                                match.url = ''
+                            if match.crawltag != grep_request.crawltag:
+                                match.crawltag = ''
+                            break
+                    else:
+                        matches.append(grep_request)
+                        print(matches)
+
+                # generate at most 10 options to reduce unnecessary bandwidth
+                if (len(matches) > 10):
+                    matches = matches[:10]
+
+                suggestions = [match.content_title for match in matches]
+                urls = [match.url for match in matches]
+                crawltags = [match.crawltag for match in matches]
+
                 reply = JsonResponse({'option': json.dumps(suggestions), 'url': json.dumps(urls), 'crawltag': json.dumps(crawltags)})
 
     return reply
