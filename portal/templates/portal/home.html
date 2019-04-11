@@ -165,7 +165,7 @@
 
       <!-- new category button -->
       {% if user.is_authenticated %}
-      <a href="" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
+      <a href="" id="new-category" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
         Add new Category
       </a>
       {% endif %}
@@ -273,7 +273,7 @@ aria-hidden="true">
 
     <form method="post">
       <div class="modal-body mx-3">
-        <div class="md-form mb-5">
+        <div class="md-form autocomplete">
           <i class="fas fa-envelope prefix grey-text"></i>
             {% csrf_token %}
             <input type="text" id="cate_title" class="form-control validate" name="new_cate_title">

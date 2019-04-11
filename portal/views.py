@@ -1,10 +1,14 @@
+import json
+
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Category, Message, GrepRequest
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
-from .crawlpage import crawlpage
-from .tasks import process_grep_requests
+from django.views.decorators.csrf import csrf_exempt
+from .models import Category, Message, GrepRequest
+from .crawlpage import crawlpage, process_grep_requests
+from django.contrib import messages #new added for popup message
 
 
 
@@ -36,10 +40,13 @@ def home(request):
                 new_category.title = request.POST['new_cate_title']
                 new_category.author = request.user
                 new_category.save()
+                messages.success(request, new_category.title + ' is added as a new category.')
                 #add more so categories have been changed
                 categories = Category.objects.filter(author=request.user)
+
             else:
                 # raise the error message, the category name is repeated.
+                messages.warning(request, 'The category is already existed.')
                 pass
 
 
@@ -56,13 +63,13 @@ def home(request):
             new_msg = Message()
             new_msg.title = msg_title
             new_msg.category = categories.get(pk = category_id)
-            new_msg.content = ".."
+            new_msg.content = element
             new_msg.save()
 
             # save grep request
             new_grep = GrepRequest()
             new_grep.content_title = msg_title
-            new_grep.selected_content = element
+            new_grep.crawltag = crawltag
             new_grep.url = url
             new_grep.message = new_msg
             new_grep.save()
@@ -98,6 +105,7 @@ def category(request, pk):
         messages = Message.objects.filter(category__pk = pk)
 
         if "Delete_cate" in request.POST:
+
             category.delete()
             return redirect('portal-home')
 
@@ -116,3 +124,25 @@ def category(request, pk):
         'messages': messages
     }
     return render(request, 'portal/category.html', content)
+
+# Note that we are not afraid of identity forgery for recommendation
+# as it is public, so we use csrf_exempt to exempt the identity check,
+# For security-critical tasks, DO NOT blindly copy this tag.
+@csrf_exempt
+def recommend(request):
+    reply = JsonResponse({'option': json.dumps([]), 'url': json.dumps([])})
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            json_data = json.loads(request.body)
+            if 'search_string' in json_data:
+                search_string = json_data['search_string']
+                grep_requests = GrepRequest.objects.filter(content_title__icontains=search_string)
+                suggestions = [grep_request.content_title for grep_request in grep_requests]
+                urls = [grep_request.url for grep_request in grep_requests]
+                crawltags = [grep_request.crawltag for grep_request in grep_requests]
+                # Generate at most 10 options
+                #suggestions = ["CENG2010","CENG2400","ESTR2100","CENG3150","CENG3410","CENG3420"]
+                #urls = ["a", "b", "c", "d", "e", "f"] # Auto filling URL is not implemented yet
+                reply = JsonResponse({'option': json.dumps(suggestions), 'url': json.dumps(urls), 'crawltag': json.dumps(crawltags)})
+
+    return reply
