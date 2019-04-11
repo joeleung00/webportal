@@ -124,6 +124,7 @@ def category(request, pk):
 
 
     content = {
+        'all_categories': Category.objects.filter(author=request.user),
         'category' : category,
         'messages': messages
     }

@@ -32,10 +32,16 @@
 {% block left_menu %}
 <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
   <li class=" nav-item"><a href="{% url 'portal-home' %}"><i class="ft-home"></i>Dashboard</a>
-  </li>
+<!--  </li>
   <li class=" nav-item">
   <a href="{% url 'portal-category' category.id  %}" id="currentURL" style="display: none">{% url 'portal-category' category.id  %}</a>
   </li>
+-->
+  {% for category in all_categories %}
+      <li class=" nav-item">
+      <a href="{% url 'portal-category' category.id  %}"><i class="ft-layers"></i><span class=title>{{ category.title }}</span></a>
+      </li>
+  {% endfor %}
 
   <!-- list item for the category -->
   {% for category in categories %}
