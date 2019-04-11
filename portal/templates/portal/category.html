@@ -127,12 +127,12 @@
                   {% csrf_token %}
                   <input type="hidden" name="Delete_cate" value= {{ category.id }}>
                   <div class="modal-header">
-                      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Category</h4>
+                      <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete Category</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <div class="modal-body">
+                  <div class="modal-body warning-msg">
                       Are you sure you want to delete?
                   </div>
 
@@ -153,12 +153,12 @@
                   {% csrf_token %}
                   <input type="hidden" name="Delete_cate" value= {{ category.id }}>
                   <div class="modal-header">
-                      <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Selected Message</h4>
+                      <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete Selected Message</h4>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
-                  <div class="modal-body">
+                  <div class="modal-body warning-msg">
                       Are you sure you want to delete?
                   </div>
 
@@ -181,12 +181,12 @@
                     {% csrf_token %}
                     <input type="hidden" name="Delete_msg" value= {{ message.id }}>
                     <div class="modal-header">
-                        <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete</h4>
+                        <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body warning-msg">
                         Are you sure you want to delete?
                     </div>
 

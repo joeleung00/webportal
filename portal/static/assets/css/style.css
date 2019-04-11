@@ -13,3 +13,12 @@ WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BET
 .card{
   opacity: 0.9;
 }
+
+.warning-msg{
+  color: #ee0000;
+  font-size: 16px;
+}
+
+.warning-title{
+
+}

@@ -116,12 +116,12 @@
                         {% csrf_token %}
                         <input type="hidden" name="Delete_cate" value= {{ block.category.id }}>
                         <div class="modal-header">
-                            <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete Category</h4>
+                            <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete Category</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body warning-msg">
                             Are you sure you want to delete?
                         </div>
 
@@ -144,12 +144,12 @@
                           {% csrf_token %}
                           <input type="hidden" name="Delete_msg" value= {{ message.id }}>
                           <div class="modal-header">
-                              <h4 class="modal-title w-100 font-weight-bold" id="maintext">Confirm Delete</h4>
+                              <h4 class="modal-title w-100 font-weight-bold warning-title" id="maintext">Confirm Delete</h4>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                           </div>
-                          <div class="modal-body">
+                          <div class="modal-body warning-msg">
                               Are you sure you want to delete?
                           </div>
 
@@ -168,6 +168,11 @@
 
       <!-- new category button -->
       {% if user.is_authenticated %}
+
+      <a href="" class="btn btn-info btn-block btn-glow btn-upgrade-pro mx-1 mb-4"  data-toggle="modal" data-target="#reorderCategory">
+        Reorder Category
+      </a>
+
       <a href="" id="new-category" class="btn btn-primary btn-block btn-glow btn-upgrade-pro mx-1" data-toggle="modal" data-target="#modalAddCategoryForm">
         Add new Category
       </a>
@@ -447,7 +452,7 @@ aria-hidden="true">
   <footer class="footer footer-static footer-light navbar-border navbar-shadow" style="opacity: 0.8;">
     <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">CSCI 3100 </span>
       <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
-        <li class="list-inline-item"><a href=""  data-toggle="modal" data-target="#reorderCategory"> Reorder Category</a></li>
+
         </ul>
 
     <!-- "About" link -->
