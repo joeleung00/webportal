@@ -6,31 +6,10 @@ from django.shortcuts import redirect
 from .crawlpage import crawlpage
 from .tasks import process_grep_requests
 #from django.http import JsonResponse
-from urllib import request
 
-def check_no_repeat_name(request, categories):
-    new_category_title = request.POST['new_cate_title']
-    for category in categories:
-        if (new_category_title == category.title):
-            return False
-    return True
+from .check_err import check_no_repeat_name
+from .check_err import check_input_error
 
-def check_input_error(url, msg_title, crawltag):
-    error = 100
-    try:
-        request.urlopen(url)
-        print("sucess")
-    except:
-        print("url error")
-        error = 2
-
-    if (msg_title == ''):
-        error = 0
-
-    if (crawltag == ''):
-        error = 3
-
-    return error
 
 def home(request):
     content = {}
@@ -65,6 +44,8 @@ def home(request):
             msg_title = request.POST["message_title"]
             crawltag = request.POST["crawltag"]
             category_id = request.POST["category_dropdown"]
+            add_to_calendar = request.POST["add_to_calendar"]
+
             #  checkvalid()..
             error = check_input_error(url, msg_title, crawltag)
             if ( error == 100):
@@ -80,6 +61,10 @@ def home(request):
                 new_grep = GrepRequest()
                 new_grep.content_title = msg_title
                 new_grep.selected_content = element
+                if (add_to_calendar == '1'):
+                    new_grep.add_to_calendar = True
+                else:
+                    new_grep.add_to_calendar = False
                 new_grep.url = url
                 new_grep.message = new_msg
                 new_grep.save()
@@ -97,38 +82,13 @@ def home(request):
 
     return render(request, 'portal/home.html', content)
 
-def reorder(request):
-    categories = Category.objects.filter(author=request.user)
-
-    content = {
-        'category_blocks': None,
-    }
-
-    if "order[]" in request.POST:
-        order = request.POST.getlist('order[]')
-        for i, id in enumerate(order):
-            category = categories.get(pk = id)
-            category.position = i + 1
-            category.save()
-        categories.order_by('position')
-
-    content["category_blocks"] = [
-        {
-            'category': category,
-            'messages': Message.objects.filter(category=category),
-        } for category in categories
-    ]
-    return render(request, 'portal/home.html', content)
 
 
 def about(request):
     process_grep_requests()
     return render(request, 'portal/about.html')
 
-def reasign_order(categories):
-    for i, category in enumerate(categories):
-        category.position = i + 1
-        category.save()
+
 
 def category(request, pk):
     content = {}

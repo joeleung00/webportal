@@ -33,7 +33,7 @@ class GrepRequest(models.Model):
     #selector_type = models.CharField(max_length=5)
     url = models.CharField(max_length=500)
     #date_posted = models.DateTimeField(default=timezone.now)
-    #add_to_calendar = models.BooleanField(default=True)
+    add_to_calendar = models.BooleanField(default=False)
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
 
     def __str__(self):

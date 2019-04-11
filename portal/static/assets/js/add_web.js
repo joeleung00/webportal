@@ -1,4 +1,11 @@
 $("#add_website_form").submit(function(e){
+ var check;
+ if ($('#add_to_calendar').is(':checked')) {
+    check = 1
+}
+else {
+    check = 0
+}
  e.preventDefault();
  $.ajax({
    type:"POST",
@@ -8,6 +15,7 @@ $("#add_website_form").submit(function(e){
      'category_dropdown':$('#category_dropdown').val(),
      'crawllink':$('#crawllink').val(),
      'crawltag':$('#crawltag').val(),
+     'add_to_calendar': check,
      'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val()
    },
    success:function(data){
