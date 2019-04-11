@@ -55,6 +55,8 @@ def home(request):
             error = check_input_error(url, msg_title, crawltag, add_to_calendar, request.user)
             if ( error == 100):
                 element = crawlpage(url, crawltag)
+                if element[0:5] == "Error":
+                    return HttpResponse(3)
                 # save message
                 new_msg = Message()
                 new_msg.title = msg_title

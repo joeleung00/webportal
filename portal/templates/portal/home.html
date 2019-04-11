@@ -322,7 +322,7 @@ aria-hidden="true">
         <i class="fas fa-envelope prefix grey-text"></i>
         <ul id="columns">
           {% for block in category_blocks %}
-          <li class="column" draggable="true" id={{ block.category.id }}><header>{{ block.category.title }}</header></li>
+          <li class="column" draggable="true" id={{ block.category.id }}><header><font size='4'>{{ block.category.title }}</font></header></li>
           {% endfor %}
         </ul>
       </div>
