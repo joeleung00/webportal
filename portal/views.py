@@ -10,7 +10,14 @@ from .models import Category, Message, GrepRequest
 from .crawlpage import crawlpage, process_grep_requests
 from django.contrib import messages #new added for popup message
 
-
+def fix_full_url(url):
+    #
+    # Try to convert the url to absolute url if it is not starting with XXX://
+    #
+    if '//' not in url:
+        return '//%s' % url
+    else:
+        return url
 
 def check_no_repeat_name(request, categories):
     new_category_title = request.POST['new_cate_title']
@@ -52,7 +59,7 @@ def home(request):
 
         # dealing with grep request
         if "crawllink" in request.POST and "message_title" in request.POST and "crawltag" in request.POST:
-            url = request.POST["crawllink"]
+            url = fix_full_url(request.POST["crawllink"])
             msg_title = request.POST["message_title"]
             crawltag = request.POST["crawltag"]
             category_id = request.POST["category_dropdown"]
@@ -64,6 +71,7 @@ def home(request):
             new_msg.title = msg_title
             new_msg.category = categories.get(pk = category_id)
             new_msg.content = element
+            new_msg.full_url = url
             new_msg.save()
 
             # save grep request
