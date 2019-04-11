@@ -23,13 +23,18 @@ function selectMessages()
     for(var i=0; i<checkbox.length; i++) {
       if (checkbox[i].style.display === "none") {
         checkbox[i].style.display = "block";
-        selectMessageButton.className = "btn btn-secordary btn-block";
+        selectMessageButton.className = "btn btn-warning btn-block";
         deleteSelectMessageButton.style.display = "block";
       } else {
         checkbox[i].style.display = "none";
         selectMessageButton.className = "btn btn-success btn-block";
         deleteSelectMessageButton.style.display = "none";
       }
+    }
+    if(selectedMessage.length > 0){
+      deleteSelectMessageButton.className = "btn btn-danger btn-block";
+    } else {
+      deleteSelectMessageButton.className = "btn btn-secordary btn-block";
     }
 }
 
@@ -51,7 +56,14 @@ function updateCheckBoxValue(messageID)
       selectedMessage.push(messageID);  // add element
     }
 
-    console.log(selectedMessage);
+    var deleteSelectMessageButton = document.getElementById("delete_select_message_button");
+    if(selectedMessage.length > 0){
+      deleteSelectMessageButton.className = "btn btn-danger btn-block";
+    } else {
+      deleteSelectMessageButton.className = "btn btn-secordary btn-block";
+    }
+
+    // console.log(selectedMessage);
 
 }
 
@@ -59,7 +71,7 @@ function deleteSelectedMessage()
 {
     var current_url = document.getElementById("currentURL");
     var deleteSelectMessageButton = document.getElementById("delete_select_message_button");
-    if(deleteSelectMessageButton.className == "btn btn-secordary btn-min-width"){
+    if(deleteSelectMessageButton.className == "btn btn-secordary btn-block"){
       return;
     } else {
       $.ajax({
