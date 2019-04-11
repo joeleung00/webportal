@@ -9,7 +9,7 @@ from .tasks import process_grep_requests
 
 from .check_err import check_no_repeat_name
 from .check_err import check_input_error
-
+from .ordering import reasign_order
 
 def home(request):
     content = {}

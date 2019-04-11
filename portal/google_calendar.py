@@ -11,7 +11,7 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
-def google_calendar_connection():
+def google_calendar_connection(user):
 
     SCOPES = ['https://www.googleapis.com/auth/calendar']
 
@@ -22,8 +22,10 @@ def google_calendar_connection():
 
     # Comment below three rows of code to require user to authorize everytime
     try:
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+        prefix = 'Token/'
+        token_name = 'token{}.pickle'.format(user.id)
+        if os.path.exists(prefix + token_name):
+            with open(prefix + token_name, 'rb') as token:
                 creds = pickle.load(token)
 
         # If there are no (valid) credentials available, let the user log in.
@@ -35,7 +37,7 @@ def google_calendar_connection():
                     'client_secret.json', SCOPES)
                 creds = flow.run_local_server()
             # Save the credentials for the next run
-            with open('token.pickle', 'wb') as token:
+            with open(prefix + token_name, 'wb') as token:
                 pickle.dump(creds, token)
 
         service = build('calendar', 'v3', credentials=creds)
@@ -59,7 +61,7 @@ def createEvent(Gcal, title, startDate, startTime, endDate, endTime):
 
 def calendar(request):
 
-    Gcal = google_calendar_connection()
+    Gcal = google_calendar_connection(request.user)
     if (Gcal != False):
         profile = Profile.objects.get(user=request.user)
         profile.google_auth = True
