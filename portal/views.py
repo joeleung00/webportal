@@ -99,9 +99,11 @@ def home(request):
 
 
 def about(request):
-    process_grep_requests()
     return render(request, 'portal/about.html')
 
+def reload_function(request):
+    process_grep_requests()
+    return redirect("portal-home")
 
 
 def category(request, pk):

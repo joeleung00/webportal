@@ -12,4 +12,5 @@ urlpatterns = [
     #path("crawl/", crawlpage.crawlpage, name='crawl')
     path('calendar/', google_calendar.calendar),
     path("reorder/", ordering.reorder, name='reorder'),
+    path("reload/", views.reload_function, name='reload'),
 ]
