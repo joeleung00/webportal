@@ -10,7 +10,7 @@ $("#add_category_form").submit(function(e){
    },
    success:function(data){
      if (data == "error"){
-       $( "#category_error_msg" ).text( "Duplicated category name, Please enter again" ).show();
+       $( "#category_error_msg" ).text( "Duplicated category name or name is empty. Please enter again" ).show();
      }
      else{
         //document.getElementById("add_category_form").reset();

@@ -36,6 +36,8 @@ def home(request):
                 else:
                     # raise the error message, the category name is repeated.
                     return HttpResponse("error")
+            else:
+                return HttpResponse("error")
 
 
         # dealing with grep request
