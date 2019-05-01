@@ -1,3 +1,4 @@
+// This function detect how user sort the category and return the order to server
 function returnOrder(){
   var items = document.querySelectorAll("#columns li"),
   order = [];

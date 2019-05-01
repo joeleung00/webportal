@@ -1,3 +1,4 @@
+// this code handle the drag and drop function
 var dragSrcEl = null;
 
 function handleDragStart(e) {

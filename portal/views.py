@@ -27,6 +27,7 @@ from .ordering import reasign_order
 def home(request):
     content = {}
 
+    # user has to be authenticated for using our webpage
     if request.user.is_authenticated:
         # dealing with categors
         # show category that is belongs to user
@@ -35,9 +36,11 @@ def home(request):
         content = {
             'category_blocks': None,
         }
+        # detect the create new category action
         if "new_cate_title" in request.POST:
             if request.POST['new_cate_title'] != '':
                 if (check_no_repeat_name(request, categories)):
+                    # assign the value for the created attribute
                     new_category = Category()
                     new_category.title = request.POST['new_cate_title']
                     new_category.author = request.user
@@ -50,6 +53,7 @@ def home(request):
                     # raise the error message, the category name is repeated.
                     return HttpResponse("error")
             else:
+                # raise the error message, the category name is empty.
                 return HttpResponse("error")
 
 
@@ -61,7 +65,7 @@ def home(request):
             category_id = request.POST["category_dropdown"]
             add_to_calendar = request.POST["add_to_calendar"]
 
-            #  checkvalid()..
+            #  check if the attribute is valid
             error = check_input_error(url, msg_title, crawltag, add_to_calendar, request.user)
             if ( error == 100):
                 element = crawlpage(url, crawltag)
@@ -116,23 +120,26 @@ def reload_function(request):
     return redirect("portal-home")
 
 
+# handle the delete function
 def category(request, pk):
     content = {}
     if request.user.is_authenticated:
         category = Category.objects.get(pk = pk)
         messages = Message.objects.filter(category__pk = pk)
 
+        # delete category
         if "Delete_cate" in request.POST:
 
             category.delete()
             categories = Category.objects.filter(author=request.user)
             reasign_order(categories)
             return redirect('portal-home')
-
+        # delete the message
         if "Delete_msg" in request.POST:
             message_id = request.POST["Delete_msg"]
             Message.objects.get(pk=message_id).delete()
 
+        # delete multiple message 
         if "Delete_multi_msg" in request.POST:
             messages_list = request.POST.getlist('selectedMessage[]')
             for message_id in messages_list:

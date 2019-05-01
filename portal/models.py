@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+# These are the models that saved in our database
 class Category(models.Model):
     title = models.CharField(max_length=100)
     author =  models.ForeignKey(User, on_delete=models.CASCADE)
@@ -12,6 +13,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    # the default sorting method for Category is by position attribute
     class Meta:
         ordering = ['position']
 
@@ -28,6 +30,7 @@ class Message(models.Model):
     def __str__(self):
         return self.title
 
+    # the default sorting method for Message is by their modified_date in decending order
     class Meta:
         ordering = ['-modified_date']
 
@@ -43,6 +46,8 @@ class GrepRequest(models.Model):
     def __str__(self):
         return self.content_title
 
+# This function will be trigger when any user is created.
+# Then it will automatically create a new category which is called News
 @receiver(post_save, sender=User)
 def create_user_category(sender, instance, created, **kwargs):
     if created:

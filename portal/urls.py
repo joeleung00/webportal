@@ -4,6 +4,7 @@ from . import crawlpage
 from . import google_calendar
 
 from . import ordering
+# this code handle url routing
 urlpatterns = [
     path('category/<int:pk>/', views.category, name='portal-category'),
     path('', views.home, name='portal-home'),

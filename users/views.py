@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 
+# This function handle the user creation event
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
